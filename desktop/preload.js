@@ -26,9 +26,10 @@ contextBridge.exposeInMainWorld("murmur", {
   requestMicPermission: () => ipcRenderer.send("request-mic-permission"),
   openAccessibilitySettings: () => ipcRenderer.send("open-accessibility-settings"),
 
-  // History
+  // History & Stats
   getHistory: () => ipcRenderer.invoke("get-history"),
   clearHistory: () => ipcRenderer.send("clear-history"),
+  getStats: () => ipcRenderer.invoke("get-stats"),
 
   // Misc
   hide: () => ipcRenderer.send("hide-window"),

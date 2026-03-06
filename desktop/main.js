@@ -32,6 +32,7 @@ async function initStore() {
       onboardingDone: false,
       history: [],
       weeklyUsage: { count: 0, resetAt: getNextMonday() },
+      stats: { totalDuration: 0, totalChars: 0, totalSessions: 0 },
     },
   });
 }
@@ -76,9 +77,8 @@ let isCurrentlyRecording = false;
 app.whenReady().then(async () => {
   await initStore();
 
-  if (process.platform === "darwin") {
-    app.dock.hide();
-  }
+  // Show dock icon — Parla is a full desktop app
+  // if (process.platform === "darwin") app.dock.hide();
 
   createTray();
   createMainWindow();
@@ -108,12 +108,11 @@ function createTray() {
   }
 
   tray = new Tray(icon);
-  tray.setTitle(" M");
   tray.setToolTip("Parla 语音输入");
   updateTrayMenu();
 
-  tray.on("click", (_event, bounds) => {
-    toggleMainWindow(bounds);
+  tray.on("click", () => {
+    showMainWindow();
   });
 }
 
@@ -149,16 +148,15 @@ function updateTrayMenu() {
 // --- Main Window ---
 function createMainWindow() {
   mainWin = new BrowserWindow({
-    width: 380,
-    height: 520,
+    width: 940,
+    height: 640,
+    minWidth: 720,
+    minHeight: 480,
     show: false,
-    frame: false,
-    transparent: true,
-    alwaysOnTop: true,
-    skipTaskbar: true,
-    resizable: false,
+    titleBarStyle: "hiddenInset",
+    trafficLightPosition: { x: 16, y: 18 },
+    backgroundColor: "#FFFFFF",
     hasShadow: true,
-    roundedCorners: true,
     webPreferences: {
       preload: path.join(__dirname, "preload.js"),
       contextIsolation: true,
@@ -168,13 +166,6 @@ function createMainWindow() {
 
   mainWin.loadFile(path.join(__dirname, "index.html"));
 
-  mainWin.on("blur", () => {
-    if (!isCurrentlyRecording) {
-      mainWin.hide();
-    }
-  });
-
-  // Show on first launch or if onboarding not done
   mainWin.webContents.on("did-finish-load", () => {
     const onboardingDone = store.get("onboardingDone");
     const apiKey = store.get("apiKey");
@@ -190,41 +181,22 @@ function createMainWindow() {
       usage: getUsage(),
       freeLimit: FREE_LIMIT,
       history: store.get("history").slice(0, 50),
+      stats: store.get("stats"),
     });
 
-    // Show window after init
-    setTimeout(() => {
-      const bounds = tray?.getBounds();
-      showMainWindow(bounds);
-    }, 300);
+    mainWin.show();
   });
 }
 
-function showMainWindow(bounds) {
+function showMainWindow() {
   if (!mainWin) return;
-  if (bounds && bounds.x > 0) {
-    const winBounds = mainWin.getBounds();
-    const x = Math.round(bounds.x + bounds.width / 2 - winBounds.width / 2);
-    const y = Math.round(bounds.y + bounds.height + 4);
-    mainWin.setPosition(x, y);
-  } else {
-    mainWin.center();
-  }
   mainWin.show();
   mainWin.focus();
 }
 
-function toggleMainWindow(bounds) {
-  if (mainWin.isVisible()) {
-    mainWin.hide();
-  } else {
-    showMainWindow(bounds);
-  }
-}
-
 function sendToggle() {
   if (!mainWin.isVisible()) {
-    showMainWindow(tray?.getBounds());
+    showMainWindow();
   }
   mainWin.webContents.send("toggle-recording");
 }
@@ -366,8 +338,13 @@ ipcMain.handle("process-audio", async (_event, { audioBase64, context }) => {
     const polished = polishText(raw, context);
     const finalText = polished || raw;
 
-    // Track usage
+    // Track usage + stats
     addUsage(finalText.length);
+    const stats = store.get("stats") || { totalDuration: 0, totalChars: 0, totalSessions: 0 };
+    stats.totalDuration += duration;
+    stats.totalChars += finalText.length;
+    stats.totalSessions += 1;
+    store.set("stats", stats);
 
     // Save to history
     const historyItem = {
@@ -404,7 +381,6 @@ ipcMain.handle("process-audio", async (_event, { audioBase64, context }) => {
 // Insert text at cursor
 ipcMain.on("insert-text", (_event, text) => {
   clipboard.writeText(text);
-  mainWin.hide();
 
   setTimeout(() => {
     try {
@@ -427,8 +403,22 @@ ipcMain.on("copy-text", (_event, text) => {
 
 ipcMain.on("recording-state", (_event, recording) => {
   isCurrentlyRecording = recording;
-  tray.setTitle(recording ? " ●" : " M");
   updateTrayMenu();
+});
+
+ipcMain.handle("get-stats", () => {
+  const stats = store.get("stats") || { totalDuration: 0, totalChars: 0, totalSessions: 0 };
+  const durationMin = Math.round(stats.totalDuration / 60 * 10) / 10;
+  const avgSpeed = stats.totalDuration > 0 ? Math.round(stats.totalChars / (stats.totalDuration / 60)) : 0;
+  const timeSavedMin = Math.round(stats.totalChars / 40 - stats.totalDuration / 60);
+  return {
+    totalDuration: stats.totalDuration,
+    totalDurationMin: durationMin,
+    totalChars: stats.totalChars,
+    totalSessions: stats.totalSessions,
+    avgSpeed,
+    timeSavedMin: Math.max(0, timeSavedMin),
+  };
 });
 
 ipcMain.on("hide-window", () => {
