@@ -183,7 +183,7 @@ function SpeedComparison({ t }: { t: (key: string) => string }) {
           <span className="text-accent-light font-mono font-bold">~150 WPM</span>
         </div>
         <div className="h-3 bg-muted rounded-full overflow-hidden">
-          <div className="h-full rounded-full transition-all duration-1000 ease-out delay-400" style={{ width: visible ? "62%" : "0%", background: "linear-gradient(90deg, #6366f1, #818cf8)" }} />
+          <div className="h-full rounded-full transition-all duration-1000 ease-out delay-400" style={{ width: visible ? "62%" : "0%", background: "linear-gradient(90deg, #2563eb, #3b82f6)" }} />
         </div>
         <p className="text-xs text-accent-light/70">{t("sameSpeed")}</p>
       </div>
@@ -270,7 +270,7 @@ export default function LandingPage() {
             <Link href="/app" className="px-4 py-2 rounded-lg border border-border text-sm font-medium text-muted-foreground hover:text-foreground hover:border-muted-foreground transition-all">
               {t("nav.webDemo")}
             </Link>
-            <a href="#download" className="px-4 py-2 rounded-lg bg-accent hover:bg-accent-light text-white text-sm font-medium transition-all hover:shadow-[0_0_20px_rgba(99,102,241,0.4)] flex items-center gap-1.5">
+            <a href="#download" className="px-4 py-2 rounded-lg bg-accent hover:bg-accent-light text-white text-sm font-medium transition-all hover:shadow-[0_0_20px_rgba(37,99,235,0.3)] flex items-center gap-1.5">
               <Download className="w-3.5 h-3.5" /> {t("nav.download")}
             </a>
           </div>
@@ -295,7 +295,7 @@ export default function LandingPage() {
 
       {/* Hero */}
       <section className="relative pt-32 pb-20 px-6">
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[600px] bg-accent/8 rounded-full blur-[120px] pointer-events-none" />
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[600px] bg-accent/5 rounded-full blur-[120px] pointer-events-none" />
         <div className="max-w-4xl mx-auto text-center relative z-10">
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-border bg-surface text-sm text-muted-foreground mb-8 animate-in fade-in duration-700">
             <Sparkles className="w-4 h-4 text-accent-light" /> {t("hero.badge")}
@@ -307,7 +307,7 @@ export default function LandingPage() {
             {t("hero.subtitle")}
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 animate-in fade-in slide-in-from-bottom-4 duration-700 delay-500">
-            <a href="#download" className="group px-8 py-3.5 rounded-xl bg-accent hover:bg-accent-light text-white font-semibold text-lg transition-all hover:shadow-[0_0_40px_rgba(99,102,241,0.5)] hover:scale-[1.02] flex items-center gap-2">
+            <a href="#download" className="group px-8 py-3.5 rounded-xl btn-warm text-lg flex items-center gap-2">
               <Download className="w-5 h-5" /> {t("hero.cta")}
             </a>
             <Link href="/app" className="px-8 py-3.5 rounded-xl border border-border text-muted-foreground hover:text-foreground hover:border-muted-foreground font-medium text-lg transition-all">
@@ -430,7 +430,7 @@ export default function LandingPage() {
                   <li key={f} className="flex items-center gap-2 text-sm text-foreground"><Check className="w-4 h-4 text-accent-light flex-shrink-0" />{f}</li>
                 ))}
               </ul>
-              <a href="#download" className="block w-full text-center py-2.5 rounded-xl bg-accent hover:bg-accent-light text-white font-medium transition-all hover:shadow-[0_0_20px_rgba(99,102,241,0.4)]">{t("pricing.startTrial")}</a>
+              <a href="#download" className="block w-full text-center py-2.5 rounded-xl bg-accent hover:bg-accent-light text-white font-medium transition-all hover:shadow-[0_0_20px_rgba(37,99,235,0.3)]">{t("pricing.startTrial")}</a>
             </div>
           </div>
         </div>
@@ -455,7 +455,7 @@ export default function LandingPage() {
             {t("cta.title1")} <span className="gradient-text">{t("cta.title2")}</span>
           </h2>
           <p className="text-lg text-muted-foreground mb-8">{t("cta.subtitle")}</p>
-          <a href="#download" className="group inline-flex items-center gap-2 px-8 py-3.5 rounded-xl bg-accent hover:bg-accent-light text-white font-semibold text-lg transition-all hover:shadow-[0_0_40px_rgba(99,102,241,0.5)] hover:scale-[1.02]">
+          <a href="#download" className="group inline-flex items-center gap-2 px-8 py-3.5 rounded-xl btn-warm text-lg">
             <Download className="w-5 h-5" /> {t("cta.button")}
           </a>
         </div>
