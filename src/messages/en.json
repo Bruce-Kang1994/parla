@@ -1,0 +1,142 @@
+{
+  "nav": {
+    "features": "Features",
+    "howItWorks": "How it works",
+    "pricing": "Pricing",
+    "faq": "FAQ",
+    "download": "Download free",
+    "webDemo": "Web demo"
+  },
+  "hero": {
+    "badge": "AI-powered voice input tool",
+    "title1": "You talk,",
+    "title2": "I type.",
+    "subtitle": "Type 3x faster by speaking. Parla runs in the background — press a hotkey to voice-type in any app. Filler words removed, grammar fixed, output formatted automatically.",
+    "cta": "Download free for macOS",
+    "secondaryCta": "Try web demo",
+    "comingSoon": "Windows coming soon"
+  },
+  "demo": {
+    "youSaid": "You said",
+    "processing": "Processing...",
+    "done": "Done",
+    "waiting": "Waiting...",
+    "output": "Parla output"
+  },
+  "speed": {
+    "title1": "Type at the ",
+    "title2": "speed of thought",
+    "title3": "",
+    "subtitle": "Average typing speed is 40 WPM. Natural speech is 150 WPM. Parla gives you 3x the speed while producing cleaner text than you'd type.",
+    "typing": "Typing",
+    "regularStt": "Regular speech-to-text",
+    "murmur": "Parla (speak + AI polish)",
+    "subSecond": "Sub-second processing",
+    "aiPolished": "AI-polished output",
+    "sameSpeed": "Same speed as speech-to-text, but output is polished and formatted"
+  },
+  "features": {
+    "title1": "Not just dictation.",
+    "title2": "Intelligence.",
+    "subtitle": "Parla understands your intent and outputs what you actually mean.",
+    "smartCleanup": "Smart cleanup",
+    "smartCleanupDesc": "Automatically removes filler words like \"um\" and \"uh\", merges repetitions, and detects self-corrections. Speak casually, get polished output.",
+    "contextAware": "Context-aware",
+    "contextAwareDesc": "Formal for emails, casual for chat, technical for code comments. Parla adapts tone based on the active app.",
+    "languages": "100+ languages",
+    "languagesDesc": "Switch between languages freely, even mix them in one sentence. Whisper auto-detects language with no manual setup.",
+    "fast": "Sub-second response",
+    "fastDesc": "Less than 1 second from releasing the hotkey to text appearing. Groq-accelerated inference runs 200x faster than real-time.",
+    "privacy": "Privacy first",
+    "privacyDesc": "Audio is discarded immediately after processing. Never stored, never used for training. Local offline model support coming soon.",
+    "globalHotkey": "Global hotkey",
+    "globalHotkeyDesc": "Custom hotkey (default Fn) works in any app. Press and hold to speak, release to auto-insert text at cursor position."
+  },
+  "howItWorks": {
+    "title": "How it works",
+    "subtitle": "Three steps to start. One second to finish.",
+    "step1": "Press the hotkey",
+    "step1Desc": "Hold your configured hotkey (e.g. Fn) in any app and start speaking. Talk naturally, no need to avoid filler words.",
+    "step2": "AI polishes",
+    "step2Desc": "Whisper transcribes your speech, then an LLM removes filler words, fixes grammar, and formats the output. All in under 1 second.",
+    "step3": "Auto-insert",
+    "step3Desc": "Release the hotkey and polished text is automatically inserted at your cursor position. No copy-paste needed, writes directly into the active app."
+  },
+  "worksEverywhere": {
+    "title": "Works in any app",
+    "subtitle": "Parla runs silently in the background. Press the hotkey to voice-type in whichever app you're using."
+  },
+  "pricing": {
+    "title": "Simple pricing",
+    "subtitle": "Start free. Upgrade when you need more.",
+    "free": "Free",
+    "freeDesc": "For daily personal use",
+    "perMonth": "/month",
+    "freeFeature1": "30 minutes of voice input per day",
+    "freeFeature2": "100+ languages",
+    "freeFeature3": "Smart polish",
+    "freeFeature4": "Custom hotkey",
+    "getStarted": "Download free",
+    "popular": "Recommended",
+    "pro": "Pro",
+    "proDesc": "For power users",
+    "proFeature1": "Unlimited usage",
+    "proFeature2": "100+ languages",
+    "proFeature3": "Priority processing",
+    "proFeature4": "Custom AI prompts",
+    "proFeature5": "History & search",
+    "proFeature6": "API access",
+    "startTrial": "Start 7-day free trial"
+  },
+  "faq": {
+    "title": "Frequently asked questions",
+    "q1": "How accurate is the recognition?",
+    "a1": "Parla uses Whisper large-v3, one of the most accurate speech recognition engines. It handles accents, background noise, and multilingual mixing. The AI polish layer further cleans up any remaining filler words and grammar issues.",
+    "q2": "Which operating systems are supported?",
+    "a2": "Currently macOS is supported. Windows is in development. You can also try the core features via the web demo.",
+    "q3": "Which languages are supported?",
+    "a3": "100+ languages via the Whisper model, including Chinese, English, Japanese, Korean, and more. You can mix multiple languages in the same sentence with no manual switching.",
+    "q4": "Is my voice data safe?",
+    "a4": "Yes. Audio is discarded immediately after cloud processing. Never stored, never used for training. Full offline mode is planned for the future.",
+    "q5": "How is this different from built-in dictation?",
+    "a5": "Built-in dictation transcribes word-for-word, including all the \"um\"s, false starts, and mistakes. Parla adds an AI layer: it understands your intent, removes filler, auto-formats, and outputs text ready to use.",
+    "q6": "Can I customize the hotkey?",
+    "a6": "Yes. The onboarding flow guides you through hotkey setup. Default is Fn, but you can change it to any key combination you prefer."
+  },
+  "cta": {
+    "title1": "Stop typing one letter at a time.",
+    "title2": "Just speak.",
+    "subtitle": "3x faster writing. Download free and try it now.",
+    "button": "Download Parla free"
+  },
+  "footer": {
+    "tagline": "You talk, I type."
+  },
+  "app": {
+    "general": "General",
+    "email": "Email",
+    "chat": "Chat",
+    "document": "Document",
+    "code": "Code",
+    "live": "Live",
+    "holdSpace": "Hold {key} to speak, release to finish",
+    "orClickMic": "Or click the mic button. Text is auto-copied to your clipboard.",
+    "copiedToClipboard": "Copied to clipboard",
+    "history": "History",
+    "clear": "Clear",
+    "noHistory": "No recordings yet. Start speaking to see your history.",
+    "micDenied": "Microphone access denied. Please allow mic access in your browser settings.",
+    "somethingWrong": "Something went wrong. Please try again."
+  },
+  "transcript": {
+    "polished": "Polished",
+    "rawTranscript": "Raw transcript",
+    "hideRaw": "Hide raw",
+    "showRaw": "Show raw"
+  },
+  "voice": {
+    "recording": "Recording... click to stop",
+    "processing": "Processing...",
+    "clickToStart": "Click to start"
+  }
+}

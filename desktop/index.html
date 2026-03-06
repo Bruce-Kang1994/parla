@@ -1,0 +1,1158 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<title>Parla</title>
+<style>
+:root {
+  --bg: rgba(28, 28, 30, 0.97);
+  --surface: rgba(44, 44, 46, 0.95);
+  --surface-hover: rgba(58, 58, 60, 0.95);
+  --border: rgba(255, 255, 255, 0.08);
+  --text: #E5E5EA;
+  --text-secondary: #98989D;
+  --text-muted: #636366;
+  --accent: #0A84FF;
+  --accent-hover: #409CFF;
+  --red: #FF453A;
+  --green: #30D158;
+  --orange: #FF9F0A;
+  --radius: 10px;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", sans-serif;
+  background: transparent;
+  color: var(--text);
+  -webkit-user-select: none;
+  user-select: none;
+  overflow: hidden;
+  height: 100vh;
+}
+
+.app {
+  background: var(--bg);
+  backdrop-filter: blur(40px);
+  -webkit-backdrop-filter: blur(40px);
+  border-radius: 14px;
+  border: 0.5px solid var(--border);
+  box-shadow: 0 16px 50px rgba(0, 0, 0, 0.5), 0 0 0 0.5px rgba(0, 0, 0, 0.3);
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* ---- Title Bar ---- */
+.titlebar {
+  -webkit-app-region: drag;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  padding: 0 12px;
+  flex-shrink: 0;
+}
+.titlebar-title {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  margin-left: 8px;
+}
+
+/* ---- Pages ---- */
+.page { display: none; flex: 1; overflow-y: auto; overflow-x: hidden; }
+.page.active { display: flex; flex-direction: column; }
+
+/* ---- Navigation Tabs ---- */
+.nav-tabs {
+  display: flex;
+  gap: 2px;
+  padding: 4px 12px;
+  flex-shrink: 0;
+  background: var(--bg);
+}
+.nav-tab {
+  -webkit-app-region: no-drag;
+  flex: 1;
+  padding: 8px 0;
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  font-size: 11px;
+  font-weight: 500;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: all 0.15s;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+}
+.nav-tab:hover { color: var(--text-secondary); background: var(--surface); }
+.nav-tab.active { color: var(--accent); background: rgba(10, 132, 255, 0.1); }
+.nav-tab svg { width: 18px; height: 18px; }
+
+/* ---- Onboarding ---- */
+.onboarding {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 24px 20px;
+  text-align: center;
+  gap: 16px;
+}
+.onboarding h2 { font-size: 18px; font-weight: 700; }
+.onboarding p { font-size: 13px; color: var(--text-secondary); line-height: 1.5; max-width: 300px; }
+.ob-step-dots {
+  display: flex; gap: 6px;
+}
+.ob-dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--text-muted);
+  transition: all 0.2s;
+}
+.ob-dot.active { background: var(--accent); width: 18px; border-radius: 3px; }
+.ob-step-label { font-size: 11px; color: var(--text-muted); }
+
+/* ---- Form Elements ---- */
+.input-group { width: 100%; text-align: left; }
+.input-group label { font-size: 12px; color: var(--text-secondary); display: block; margin-bottom: 6px; }
+input[type="text"], input[type="password"] {
+  -webkit-app-region: no-drag;
+  width: 100%;
+  padding: 10px 12px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--text);
+  font-size: 13px;
+  outline: none;
+  font-family: "SF Mono", monospace;
+}
+input:focus { border-color: var(--accent); }
+
+.btn {
+  -webkit-app-region: no-drag;
+  padding: 10px 24px;
+  border: none;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.btn-primary { background: var(--accent); color: white; }
+.btn-primary:hover { background: var(--accent-hover); }
+.btn-primary:disabled { background: var(--text-muted); cursor: default; }
+.btn-secondary {
+  background: var(--surface);
+  color: var(--text-secondary);
+  font-size: 12px;
+  padding: 6px 14px;
+}
+.btn-secondary:hover { background: var(--surface-hover); }
+
+.link {
+  -webkit-app-region: no-drag;
+  color: var(--accent);
+  font-size: 12px;
+  cursor: pointer;
+  background: none;
+  border: none;
+  text-decoration: none;
+}
+.link:hover { text-decoration: underline; }
+
+/* ---- Permission Row ---- */
+.perm-row {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 14px;
+  background: var(--surface);
+  border-radius: var(--radius);
+  margin-bottom: 6px;
+}
+.perm-info { display: flex; align-items: center; gap: 10px; }
+.perm-icon { font-size: 18px; }
+.perm-name { font-size: 13px; font-weight: 500; }
+.perm-desc { font-size: 11px; color: var(--text-muted); }
+.perm-status { font-size: 12px; font-weight: 600; padding: 4px 10px; border-radius: 6px; }
+.perm-status.ok { color: var(--green); background: rgba(48, 209, 88, 0.1); }
+.perm-status.pending { color: var(--orange); background: rgba(255, 159, 10, 0.1); cursor: pointer; }
+
+/* ---- Recording Page ---- */
+.record-area {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 20px;
+}
+
+.context-bar {
+  -webkit-app-region: no-drag;
+  display: flex;
+  gap: 4px;
+  background: var(--surface);
+  border-radius: 10px;
+  padding: 3px;
+}
+.ctx-btn {
+  padding: 6px 12px;
+  border: none;
+  background: none;
+  color: var(--text-muted);
+  font-size: 11px;
+  font-weight: 500;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.ctx-btn:hover { color: var(--text-secondary); }
+.ctx-btn.active { background: var(--accent); color: white; }
+
+.mic-btn {
+  -webkit-app-region: no-drag;
+  width: 64px; height: 64px;
+  border-radius: 50%;
+  border: none;
+  background: var(--accent);
+  color: white;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.mic-btn:hover { background: var(--accent-hover); transform: scale(1.05); }
+.mic-btn:active { transform: scale(0.95); }
+.mic-btn.recording { background: var(--red); animation: pulse 1.8s ease-in-out infinite; }
+.mic-btn.processing { background: var(--text-muted); cursor: default; }
+
+@keyframes pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(255, 69, 58, 0.4); }
+  50% { box-shadow: 0 0 0 14px rgba(255, 69, 58, 0); }
+}
+
+.mic-icon { width: 24px; height: 24px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.stop-icon { width: 18px; height: 18px; background: white; border-radius: 3px; }
+.spinner { width: 24px; height: 24px; border: 2.5px solid rgba(255,255,255,0.3); border-top-color: white; border-radius: 50%; animation: spin 0.8s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.status { font-size: 13px; color: var(--text-secondary); font-weight: 500; min-height: 20px; }
+.status.error { color: var(--red); }
+.status.success { color: var(--green); }
+
+.timer { font-size: 13px; color: var(--text-muted); font-variant-numeric: tabular-nums; min-height: 18px; }
+
+.result-box {
+  -webkit-app-region: no-drag;
+  width: 100%;
+  padding: 10px 12px;
+  background: var(--surface);
+  border-radius: var(--radius);
+  font-size: 12px;
+  line-height: 1.5;
+  max-height: 80px;
+  overflow-y: auto;
+  cursor: pointer;
+  transition: background 0.15s;
+  display: none;
+}
+.result-box.visible { display: block; }
+.result-box:hover { background: var(--surface-hover); }
+
+.shortcut-hint { font-size: 11px; color: var(--text-muted); }
+.shortcut-hint kbd { background: rgba(255,255,255,0.08); border-radius: 4px; padding: 1px 5px; font-family: inherit; }
+
+.usage-bar-mini {
+  width: 100%;
+  height: 3px;
+  background: var(--surface);
+  border-radius: 2px;
+  overflow: hidden;
+  margin-top: 4px;
+}
+.usage-bar-mini .fill {
+  height: 100%;
+  background: var(--accent);
+  border-radius: 2px;
+  transition: width 0.3s;
+}
+.usage-text-mini { font-size: 10px; color: var(--text-muted); text-align: center; }
+
+/* ---- History Page ---- */
+.history-list { flex: 1; overflow-y: auto; padding: 8px 12px; }
+.history-empty { text-align: center; padding: 40px 20px; color: var(--text-muted); font-size: 13px; }
+.history-item {
+  -webkit-app-region: no-drag;
+  padding: 10px 12px;
+  background: var(--surface);
+  border-radius: var(--radius);
+  margin-bottom: 6px;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.history-item:hover { background: var(--surface-hover); }
+.history-text { font-size: 12px; line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.history-meta { font-size: 10px; color: var(--text-muted); margin-top: 4px; }
+.history-header {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 12px 16px 8px; flex-shrink: 0;
+}
+.history-header h3 { font-size: 14px; font-weight: 600; }
+
+/* ---- Settings Page ---- */
+.settings-page { flex: 1; overflow-y: auto; padding: 12px 16px; }
+.settings-section { margin-bottom: 16px; }
+.settings-section h4 { font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; padding-left: 2px; }
+.setting-row {
+  -webkit-app-region: no-drag;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 12px;
+  background: var(--surface);
+  border-radius: var(--radius);
+  margin-bottom: 4px;
+}
+.setting-label { font-size: 13px; }
+.setting-value { font-size: 13px; color: var(--text-secondary); display: flex; align-items: center; gap: 6px; }
+select {
+  -webkit-app-region: no-drag;
+  background: var(--surface-hover);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  color: var(--text);
+  font-size: 12px;
+  padding: 4px 8px;
+  outline: none;
+}
+.toggle {
+  -webkit-app-region: no-drag;
+  width: 40px; height: 22px;
+  background: var(--text-muted);
+  border-radius: 11px;
+  border: none;
+  cursor: pointer;
+  position: relative;
+  transition: background 0.2s;
+}
+.toggle.on { background: var(--green); }
+.toggle::after {
+  content: '';
+  position: absolute;
+  width: 18px; height: 18px;
+  background: white;
+  border-radius: 50%;
+  top: 2px; left: 2px;
+  transition: transform 0.2s;
+}
+.toggle.on::after { transform: translateX(18px); }
+
+/* Usage bar in settings */
+.usage-section { padding: 12px; background: var(--surface); border-radius: var(--radius); margin-bottom: 4px; }
+.usage-header { display: flex; justify-content: space-between; margin-bottom: 6px; }
+.usage-count { font-size: 14px; font-weight: 600; }
+.usage-limit { font-size: 12px; color: var(--text-muted); }
+.usage-bar { width: 100%; height: 6px; background: rgba(255,255,255,0.06); border-radius: 3px; overflow: hidden; }
+.usage-bar .fill { height: 100%; background: var(--accent); border-radius: 3px; transition: width 0.3s; }
+.usage-bar .fill.warn { background: var(--orange); }
+.usage-bar .fill.full { background: var(--red); }
+.usage-reset { font-size: 11px; color: var(--text-muted); margin-top: 6px; }
+
+/* ---- Mic Test (onboarding) ---- */
+.mic-test-bars {
+  display: flex;
+  align-items: flex-end;
+  gap: 3px;
+  height: 40px;
+}
+.mic-test-bars .bar {
+  width: 4px;
+  background: var(--accent);
+  border-radius: 2px;
+  transition: height 0.05s;
+  min-height: 4px;
+}
+
+/* ---- Confetti ---- */
+.confetti-container {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  pointer-events: none;
+  z-index: 100;
+  overflow: hidden;
+}
+.confetti {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  border-radius: 2px;
+  animation: confetti-fall 3s ease-out forwards;
+}
+@keyframes confetti-fall {
+  0% { transform: translateY(-20px) rotate(0deg); opacity: 1; }
+  100% { transform: translateY(600px) rotate(720deg); opacity: 0; }
+}
+
+/* Animations */
+.fade-in { animation: fadeIn 0.3s ease; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="titlebar">
+    <span class="titlebar-title">Parla</span>
+  </div>
+
+  <!-- ====== ONBOARDING ====== -->
+  <div class="page" id="page-onboarding">
+    <div class="onboarding" id="ob-container"></div>
+  </div>
+
+  <!-- ====== MAIN APP ====== -->
+  <div class="page" id="page-main">
+    <!-- Navigation -->
+    <div class="nav-tabs" id="main-nav">
+      <button class="nav-tab active" data-page="record">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="2" width="6" height="11" rx="3"/><path d="M5 10a7 7 0 0 0 14 0"/><line x1="12" y1="17" x2="12" y2="21"/><line x1="8" y1="21" x2="16" y2="21"/></svg>
+        录音
+      </button>
+      <button class="nav-tab" data-page="history">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        历史
+      </button>
+      <button class="nav-tab" data-page="settings">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+        设置
+      </button>
+    </div>
+
+    <!-- Record Sub-page -->
+    <div class="sub-page active" id="sub-record">
+      <div class="record-area">
+        <div class="context-bar" id="contextBar"></div>
+        <button class="mic-btn" id="micBtn">
+          <svg class="mic-icon" viewBox="0 0 24 24"><rect x="9" y="2" width="6" height="11" rx="3"/><path d="M5 10a7 7 0 0 0 14 0"/><line x1="12" y1="17" x2="12" y2="21"/><line x1="8" y1="21" x2="16" y2="21"/></svg>
+        </button>
+        <div class="status" id="status">点击或按快捷键开始</div>
+        <div class="timer" id="timer"></div>
+        <div class="result-box" id="result" title="点击插入到光标位置"></div>
+        <div class="shortcut-hint" id="shortcutHint"><kbd>⌘</kbd> <kbd>⇧</kbd> <kbd>M</kbd> 全局快捷键</div>
+        <div class="usage-text-mini" id="usageMini"></div>
+        <div class="usage-bar-mini"><div class="fill" id="usageFill"></div></div>
+      </div>
+    </div>
+
+    <!-- History Sub-page -->
+    <div class="sub-page" id="sub-history" style="display:none;">
+      <div class="history-header">
+        <h3>历史记录</h3>
+        <button class="btn-secondary" id="clearHistory">清除</button>
+      </div>
+      <div class="history-list" id="historyList"></div>
+    </div>
+
+    <!-- Settings Sub-page -->
+    <div class="sub-page" id="sub-settings" style="display:none;">
+      <div class="settings-page" id="settingsContent"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ============================================================
+// Parla Desktop Client — Full UI
+// ============================================================
+
+let appState = {
+  currentPage: "record",
+  recording: false,
+  processing: false,
+  context: "general",
+  settings: {},
+  usage: { count: 0, resetAt: "" },
+  freeLimit: 10000,
+  history: [],
+  onboardingStep: 0,
+};
+
+const MIC_SVG = `<svg class="mic-icon" viewBox="0 0 24 24"><rect x="9" y="2" width="6" height="11" rx="3"/><path d="M5 10a7 7 0 0 0 14 0"/><line x1="12" y1="17" x2="12" y2="21"/><line x1="8" y1="21" x2="16" y2="21"/></svg>`;
+
+const CONTEXTS = [
+  { key: "general", label: "通用" },
+  { key: "email", label: "邮件" },
+  { key: "chat", label: "聊天" },
+  { key: "document", label: "文档" },
+  { key: "code", label: "代码" },
+];
+
+// ---- Init ----
+window.murmur.onInit((data) => {
+  appState.settings = data;
+  appState.context = data.context || "general";
+  appState.usage = data.usage;
+  appState.freeLimit = data.freeLimit;
+  appState.history = data.history || [];
+
+  if (!data.onboardingDone) {
+    showOnboarding();
+  } else {
+    showMainApp();
+  }
+});
+
+window.murmur.onToggleRecording(() => {
+  if (!appState.recording && !appState.processing) startRecording();
+  else if (appState.recording) stopRecording();
+});
+
+window.murmur.onNavigate((page) => {
+  switchTab(page);
+});
+
+// ============================================================
+// ONBOARDING
+// ============================================================
+
+const ONBOARDING_STEPS = [
+  { id: "welcome", render: renderOBWelcome },
+  { id: "apikey", render: renderOBApiKey },
+  { id: "permissions", render: renderOBPermissions },
+  { id: "mic-test", render: renderOBMicTest },
+  { id: "shortcut-test", render: renderOBShortcutTest },
+  { id: "try-it", render: renderOBTryIt },
+  { id: "done", render: renderOBDone },
+];
+
+function showOnboarding() {
+  document.getElementById("page-onboarding").classList.add("active");
+  document.getElementById("page-main").classList.remove("active");
+  appState.onboardingStep = 0;
+  renderOnboardingStep();
+}
+
+function renderOnboardingStep() {
+  const container = document.getElementById("ob-container");
+  const step = ONBOARDING_STEPS[appState.onboardingStep];
+  const total = ONBOARDING_STEPS.length;
+  const current = appState.onboardingStep;
+
+  container.innerHTML = "";
+  container.className = "onboarding fade-in";
+
+  // Dots
+  const dots = document.createElement("div");
+  dots.className = "ob-step-dots";
+  for (let i = 0; i < total; i++) {
+    const dot = document.createElement("div");
+    dot.className = "ob-dot" + (i === current ? " active" : "");
+    dots.appendChild(dot);
+  }
+  container.appendChild(dots);
+
+  const label = document.createElement("div");
+  label.className = "ob-step-label";
+  label.textContent = `Step ${current + 1} / ${total}`;
+  container.appendChild(label);
+
+  step.render(container);
+}
+
+function obNext() {
+  appState.onboardingStep++;
+  if (appState.onboardingStep >= ONBOARDING_STEPS.length) {
+    window.murmur.saveSettings({ onboardingDone: true });
+    showMainApp();
+  } else {
+    renderOnboardingStep();
+  }
+}
+
+function renderOBWelcome(c) {
+  c.innerHTML += `
+    <div style="font-size: 40px; margin: 8px 0;">🎤</div>
+    <h2>Parla</h2>
+    <p style="font-size: 16px; color: var(--text); font-weight: 500;">开口即文字。</p>
+    <p>AI 语音输入工具，在任意应用中按下快捷键说话，文字自动出现在光标位置。</p>
+    <button class="btn btn-primary" onclick="obNext()">开始设置</button>
+  `;
+}
+
+function renderOBApiKey(c) {
+  c.innerHTML += `
+    <h2>配置语音引擎</h2>
+    <p>Parla 使用 Groq 的 AI 引擎，免费注册即可获得 API Key。</p>
+    <div class="input-group">
+      <label>API Key</label>
+      <input type="password" id="obApiKey" placeholder="gsk_..." />
+    </div>
+    <div id="obKeyStatus" style="font-size: 12px; min-height: 20px;"></div>
+    <button class="link" onclick="window.murmur.openUrl('https://console.groq.com/keys')">免费获取 Key ↗</button>
+    <button class="btn btn-primary" id="obKeyNext" onclick="obValidateKey()" disabled>验证并继续</button>
+  `;
+  // Pre-fill if already configured
+  if (appState.settings.apiKey === "configured") {
+    document.getElementById("obKeyStatus").innerHTML = `<span style="color: var(--green);">✅ 已配置</span>`;
+    document.getElementById("obKeyNext").disabled = false;
+    document.getElementById("obKeyNext").textContent = "继续";
+    document.getElementById("obKeyNext").onclick = obNext;
+  }
+  document.getElementById("obApiKey").addEventListener("input", (e) => {
+    document.getElementById("obKeyNext").disabled = !e.target.value.startsWith("gsk_");
+  });
+}
+
+async function obValidateKey() {
+  const key = document.getElementById("obApiKey").value.trim();
+  const status = document.getElementById("obKeyStatus");
+  const btn = document.getElementById("obKeyNext");
+  status.innerHTML = `<span style="color: var(--text-secondary);">验证中...</span>`;
+  btn.disabled = true;
+
+  const valid = await window.murmur.validateApiKey(key);
+  if (valid) {
+    await window.murmur.saveSettings({ apiKey: key });
+    status.innerHTML = `<span style="color: var(--green);">✅ 验证成功</span>`;
+    setTimeout(obNext, 500);
+  } else {
+    status.innerHTML = `<span style="color: var(--red);">❌ Key 无效，请检查</span>`;
+    btn.disabled = false;
+  }
+}
+
+async function renderOBPermissions(c) {
+  c.innerHTML += `
+    <h2>授权系统权限</h2>
+    <p>Parla 需要以下权限才能正常工作。</p>
+    <div id="permRows" style="width: 100%;"></div>
+    <button class="btn btn-primary" id="obPermNext" onclick="obCheckPermsAndNext()">继续</button>
+  `;
+  await obRefreshPerms();
+}
+
+async function obRefreshPerms() {
+  const perms = await window.murmur.checkPermissions();
+  const rows = document.getElementById("permRows");
+  rows.innerHTML = `
+    <div class="perm-row">
+      <div class="perm-info">
+        <span class="perm-icon">🎤</span>
+        <div>
+          <div class="perm-name">麦克风权限</div>
+          <div class="perm-desc">用于录制你的语音</div>
+        </div>
+      </div>
+      <span class="perm-status ${perms.microphone ? 'ok' : 'pending'}" ${!perms.microphone ? 'onclick="window.murmur.requestMicPermission(); setTimeout(obRefreshPerms, 2000)"' : ''}>
+        ${perms.microphone ? '✅ 已授权' : '⚠️ 去授权'}
+      </span>
+    </div>
+    <div class="perm-row">
+      <div class="perm-info">
+        <span class="perm-icon">♿</span>
+        <div>
+          <div class="perm-name">辅助功能权限</div>
+          <div class="perm-desc">用于将文字插入到光标位置</div>
+        </div>
+      </div>
+      <span class="perm-status ${perms.accessibility ? 'ok' : 'pending'}" ${!perms.accessibility ? 'onclick="window.murmur.openAccessibilitySettings(); setTimeout(obRefreshPerms, 3000)"' : ''}>
+        ${perms.accessibility ? '✅ 已授权' : '⚠️ 去授权'}
+      </span>
+    </div>
+  `;
+}
+
+async function obCheckPermsAndNext() {
+  obNext(); // Don't block — user can grant later
+}
+
+let micTestStream = null;
+let micTestAnalyser = null;
+let micTestAnimFrame = null;
+
+function renderOBMicTest(c) {
+  c.innerHTML += `
+    <h2>测试麦克风</h2>
+    <p>试着说几句话，确认音量指示器亮起。</p>
+    <div class="mic-test-bars" id="micBars"></div>
+    <button class="btn btn-primary" onclick="stopMicTest(); obNext()">继续</button>
+  `;
+  startMicTest();
+}
+
+async function startMicTest() {
+  const bars = document.getElementById("micBars");
+  if (!bars) return;
+  // Create 20 bars
+  bars.innerHTML = "";
+  for (let i = 0; i < 20; i++) {
+    const bar = document.createElement("div");
+    bar.className = "bar";
+    bar.style.height = "4px";
+    bars.appendChild(bar);
+  }
+
+  try {
+    micTestStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+    const ctx = new AudioContext();
+    const src = ctx.createMediaStreamSource(micTestStream);
+    micTestAnalyser = ctx.createAnalyser();
+    micTestAnalyser.fftSize = 64;
+    src.connect(micTestAnalyser);
+
+    const data = new Uint8Array(micTestAnalyser.frequencyBinCount);
+    function draw() {
+      if (!micTestAnalyser) return;
+      micTestAnalyser.getByteFrequencyData(data);
+      const barEls = bars.querySelectorAll(".bar");
+      for (let i = 0; i < barEls.length; i++) {
+        const val = data[i] || 0;
+        barEls[i].style.height = Math.max(4, val / 255 * 40) + "px";
+      }
+      micTestAnimFrame = requestAnimationFrame(draw);
+    }
+    draw();
+  } catch {
+    bars.innerHTML = `<p style="color: var(--red); font-size: 12px;">无法访问麦克风</p>`;
+  }
+}
+
+function stopMicTest() {
+  if (micTestStream) { micTestStream.getTracks().forEach(t => t.stop()); micTestStream = null; }
+  if (micTestAnimFrame) { cancelAnimationFrame(micTestAnimFrame); micTestAnimFrame = null; }
+  micTestAnalyser = null;
+}
+
+function renderOBShortcutTest(c) {
+  const shortcut = appState.settings.shortcut || "⌘⇧M";
+  c.innerHTML += `
+    <h2>测试快捷键</h2>
+    <p>当前快捷键:</p>
+    <div style="font-size: 28px; font-weight: 700; letter-spacing: 4px; margin: 8px 0;">⌘ ⇧ M</div>
+    <p>在 Parla 窗口外按下快捷键，确认能正常触发。</p>
+    <div id="shortcutTestResult" style="font-size: 13px; color: var(--text-muted); min-height: 20px;">等待测试...</div>
+    <button class="btn btn-primary" onclick="obNext()">继续</button>
+  `;
+  // Listen for toggle event as confirmation
+  const handler = () => {
+    const el = document.getElementById("shortcutTestResult");
+    if (el) {
+      el.innerHTML = `<span style="color: var(--green);">✅ 快捷键可用!</span>`;
+    }
+  };
+  window.murmur.onToggleRecording(handler);
+}
+
+function renderOBTryIt(c) {
+  c.innerHTML += `
+    <h2>试一试</h2>
+    <p>按 ⌘⇧M 或点击下方按钮，说一句话试试:</p>
+    <p style="color: var(--accent); font-size: 14px; font-weight: 500; margin: 4px 0;">"你好，这是我第一次使用 Parla"</p>
+    <button class="mic-btn" id="obTryBtn" style="margin: 8px 0;">
+      ${MIC_SVG}
+    </button>
+    <div id="obTryStatus" style="font-size: 13px; color: var(--text-secondary); min-height: 20px;">点击麦克风开始</div>
+    <div id="obTryResult" style="font-size: 13px; color: var(--green); min-height: 40px; max-width: 280px; text-align: center;"></div>
+    <button class="btn btn-primary" onclick="obNext()">继续</button>
+  `;
+
+  let tryRecording = false;
+  let tryRecorder = null;
+  let tryChunks = [];
+  let tryStream = null;
+
+  document.getElementById("obTryBtn").onclick = async () => {
+    if (tryRecording) {
+      // Stop
+      tryRecording = false;
+      tryRecorder?.stop();
+      tryStream?.getTracks().forEach(t => t.stop());
+      document.getElementById("obTryBtn").classList.remove("recording");
+      document.getElementById("obTryStatus").textContent = "处理中...";
+      return;
+    }
+
+    try {
+      tryStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      tryRecorder = new MediaRecorder(tryStream, {
+        mimeType: MediaRecorder.isTypeSupported("audio/webm;codecs=opus") ? "audio/webm;codecs=opus" : "audio/webm"
+      });
+      tryChunks = [];
+      tryRecorder.ondataavailable = (e) => { if (e.data.size > 0) tryChunks.push(e.data); };
+      tryRecorder.onstop = async () => {
+        const blob = new Blob(tryChunks, { type: "audio/webm" });
+        const reader = new FileReader();
+        reader.onload = async () => {
+          const base64 = reader.result.split(",")[1];
+          const result = await window.murmur.processAudio({ audioBase64: base64, context: "general" });
+          if (result.error) {
+            document.getElementById("obTryStatus").textContent = "出错了: " + result.error;
+          } else {
+            document.getElementById("obTryStatus").textContent = "识别成功!";
+            document.getElementById("obTryResult").textContent = result.polished;
+          }
+        };
+        reader.readAsDataURL(blob);
+      };
+      tryRecorder.start();
+      tryRecording = true;
+      document.getElementById("obTryBtn").classList.add("recording");
+      document.getElementById("obTryStatus").textContent = "录音中... 点击停止";
+      document.getElementById("obTryResult").textContent = "";
+    } catch {
+      document.getElementById("obTryStatus").textContent = "无法访问麦克风";
+    }
+  };
+}
+
+function renderOBDone(c) {
+  c.innerHTML += `
+    <div style="font-size: 48px; margin: 8px 0;">🎉</div>
+    <h2>一切就绪!</h2>
+    <p>Parla 已准备好为你工作。<br>在任意应用中按 ⌘⇧M 即可开始。</p>
+    <div style="background: var(--surface); border-radius: var(--radius); padding: 10px 16px; font-size: 13px;">
+      免费额度: <strong>10,000 字/周</strong>
+    </div>
+    <button class="btn btn-primary" onclick="obNext()">开始使用</button>
+  `;
+  // Confetti!
+  showConfetti();
+}
+
+function showConfetti() {
+  const container = document.createElement("div");
+  container.className = "confetti-container";
+  document.body.appendChild(container);
+  const colors = ["#FF453A", "#30D158", "#0A84FF", "#FF9F0A", "#BF5AF2", "#FFD60A"];
+  for (let i = 0; i < 60; i++) {
+    const c = document.createElement("div");
+    c.className = "confetti";
+    c.style.left = Math.random() * 100 + "%";
+    c.style.background = colors[Math.floor(Math.random() * colors.length)];
+    c.style.animationDelay = Math.random() * 2 + "s";
+    c.style.animationDuration = 2 + Math.random() * 2 + "s";
+    container.appendChild(c);
+  }
+  setTimeout(() => container.remove(), 5000);
+}
+
+// ============================================================
+// MAIN APP
+// ============================================================
+
+function showMainApp() {
+  document.getElementById("page-onboarding").classList.remove("active");
+  document.getElementById("page-main").classList.add("active");
+  renderContextBar();
+  updateUsageDisplay();
+  renderHistory();
+  renderSettings();
+}
+
+// ---- Tab Navigation ----
+document.querySelectorAll(".nav-tab").forEach(tab => {
+  tab.addEventListener("click", () => switchTab(tab.dataset.page));
+});
+
+function switchTab(page) {
+  document.querySelectorAll(".nav-tab").forEach(t => t.classList.toggle("active", t.dataset.page === page));
+  document.querySelectorAll(".sub-page").forEach(p => p.style.display = "none");
+  const target = document.getElementById("sub-" + page);
+  if (target) target.style.display = "flex";
+  appState.currentPage = page;
+  if (page === "history") renderHistory();
+  if (page === "settings") renderSettings();
+}
+
+// ---- Context Bar ----
+function renderContextBar() {
+  const bar = document.getElementById("contextBar");
+  bar.innerHTML = "";
+  CONTEXTS.forEach(ctx => {
+    const btn = document.createElement("button");
+    btn.className = "ctx-btn" + (appState.context === ctx.key ? " active" : "");
+    btn.textContent = ctx.label;
+    btn.onclick = () => {
+      appState.context = ctx.key;
+      window.murmur.saveSettings({ context: ctx.key });
+      renderContextBar();
+    };
+    bar.appendChild(btn);
+  });
+}
+
+// ---- Recording ----
+let mediaRecorder = null;
+let chunks = [];
+let stream = null;
+let timerInterval = null;
+let seconds = 0;
+
+const micBtn = document.getElementById("micBtn");
+const statusEl = document.getElementById("status");
+const timerEl = document.getElementById("timer");
+const resultEl = document.getElementById("result");
+
+micBtn.addEventListener("click", () => {
+  if (!appState.recording && !appState.processing) startRecording();
+  else if (appState.recording) stopRecording();
+});
+
+resultEl.addEventListener("click", () => {
+  if (resultEl.textContent) window.murmur.insertText(resultEl.textContent);
+});
+
+async function startRecording() {
+  try {
+    // Switch to record tab if not there
+    if (appState.currentPage !== "record") switchTab("record");
+
+    stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+    const mimeType = MediaRecorder.isTypeSupported("audio/webm;codecs=opus")
+      ? "audio/webm;codecs=opus" : "audio/webm";
+    mediaRecorder = new MediaRecorder(stream, { mimeType });
+    chunks = [];
+    mediaRecorder.ondataavailable = (e) => { if (e.data.size > 0) chunks.push(e.data); };
+    mediaRecorder.onstop = () => processAudio();
+    mediaRecorder.start();
+
+    appState.recording = true;
+    window.murmur.setRecordingState(true);
+    micBtn.className = "mic-btn recording";
+    micBtn.innerHTML = `<div class="stop-icon"></div>`;
+    statusEl.textContent = "录音中...";
+    statusEl.className = "status";
+    resultEl.classList.remove("visible");
+
+    seconds = 0;
+    timerEl.textContent = "00:00";
+    timerInterval = setInterval(() => {
+      seconds++;
+      timerEl.textContent = String(Math.floor(seconds/60)).padStart(2,"0") + ":" + String(seconds%60).padStart(2,"0");
+    }, 1000);
+  } catch {
+    statusEl.textContent = "无法访问麦克风";
+    statusEl.className = "status error";
+  }
+}
+
+function stopRecording() {
+  clearInterval(timerInterval);
+  appState.recording = false;
+  window.murmur.setRecordingState(false);
+  if (mediaRecorder?.state === "recording") mediaRecorder.stop();
+  stream?.getTracks().forEach(t => t.stop());
+  stream = null;
+
+  appState.processing = true;
+  micBtn.className = "mic-btn processing";
+  micBtn.innerHTML = `<div class="spinner"></div>`;
+  statusEl.textContent = "转录中...";
+  statusEl.className = "status";
+}
+
+async function processAudio() {
+  try {
+    const blob = new Blob(chunks, { type: "audio/webm" });
+    const reader = new FileReader();
+    reader.onload = async () => {
+      const base64 = reader.result.split(",")[1];
+
+      statusEl.textContent = "转录中...";
+      const result = await window.murmur.processAudio({ audioBase64: base64, context: appState.context });
+
+      appState.processing = false;
+
+      if (result.error) {
+        if (result.error === "NO_API_KEY") {
+          statusEl.textContent = "请先配置 API Key";
+          statusEl.className = "status error";
+          setTimeout(() => switchTab("settings"), 1500);
+        } else if (result.error === "LIMIT_REACHED") {
+          statusEl.textContent = "本周免费额度已用完";
+          statusEl.className = "status error";
+        } else if (result.error === "NO_SPEECH") {
+          statusEl.textContent = "未识别到语音";
+          statusEl.className = "status error";
+        } else {
+          statusEl.textContent = result.error;
+          statusEl.className = "status error";
+        }
+        resetMicBtn();
+        return;
+      }
+
+      // Success
+      resultEl.textContent = result.polished;
+      resultEl.classList.add("visible");
+      window.murmur.insertText(result.polished);
+
+      statusEl.textContent = "已插入到光标位置";
+      statusEl.className = "status success";
+      resetMicBtn();
+
+      if (result.usage) {
+        appState.usage = result.usage;
+        updateUsageDisplay();
+      }
+
+      setTimeout(() => {
+        statusEl.textContent = "点击或按快捷键开始";
+        statusEl.className = "status";
+      }, 3000);
+    };
+    reader.readAsDataURL(blob);
+  } catch (err) {
+    appState.processing = false;
+    statusEl.textContent = "处理失败";
+    statusEl.className = "status error";
+    resetMicBtn();
+  }
+}
+
+function resetMicBtn() {
+  micBtn.className = "mic-btn";
+  micBtn.innerHTML = MIC_SVG;
+  timerEl.textContent = "";
+}
+
+function updateUsageDisplay() {
+  const pct = Math.min(100, Math.round(appState.usage.count / appState.freeLimit * 100));
+  document.getElementById("usageMini").textContent = `${appState.usage.count.toLocaleString()} / ${appState.freeLimit.toLocaleString()} 字`;
+  document.getElementById("usageFill").style.width = pct + "%";
+}
+
+// ---- History ----
+function renderHistory() {
+  const list = document.getElementById("historyList");
+  window.murmur.getHistory().then(items => {
+    appState.history = items;
+    if (!items.length) {
+      list.innerHTML = `<div class="history-empty">暂无历史记录</div>`;
+      return;
+    }
+    list.innerHTML = "";
+    items.forEach(item => {
+      const el = document.createElement("div");
+      el.className = "history-item";
+      el.innerHTML = `
+        <div class="history-text">${escapeHtml(item.polished)}</div>
+        <div class="history-meta">${new Date(item.timestamp).toLocaleString("zh-CN")} · ${item.context || "通用"}</div>
+      `;
+      el.onclick = () => window.murmur.insertText(item.polished);
+      list.appendChild(el);
+    });
+  });
+}
+
+document.getElementById("clearHistory").onclick = () => {
+  window.murmur.clearHistory();
+  renderHistory();
+};
+
+// ---- Settings ----
+function renderSettings() {
+  window.murmur.getSettings().then(s => {
+    appState.settings = s;
+    appState.usage = s.usage;
+    const pct = Math.min(100, Math.round(s.usage.count / s.freeLimit * 100));
+    const pctClass = pct >= 100 ? "full" : pct >= 80 ? "warn" : "";
+    const resetDate = new Date(s.usage.resetAt).toLocaleDateString("zh-CN", { month: "long", day: "numeric", weekday: "short" });
+
+    document.getElementById("settingsContent").innerHTML = `
+      <div class="settings-section">
+        <h4>用量</h4>
+        <div class="usage-section">
+          <div class="usage-header">
+            <span class="usage-count">${s.usage.count.toLocaleString()} 字</span>
+            <span class="usage-limit">/ ${s.freeLimit.toLocaleString()} 字</span>
+          </div>
+          <div class="usage-bar"><div class="fill ${pctClass}" style="width: ${pct}%"></div></div>
+          <div class="usage-reset">重置于 ${resetDate}</div>
+        </div>
+      </div>
+
+      <div class="settings-section">
+        <h4>语音识别</h4>
+        <div class="setting-row">
+          <span class="setting-label">默认场景</span>
+          <select id="setContext" onchange="saveSetting('context', this.value)">
+            ${CONTEXTS.map(c => `<option value="${c.key}" ${s.context === c.key ? 'selected' : ''}>${c.label}</option>`).join("")}
+          </select>
+        </div>
+      </div>
+
+      <div class="settings-section">
+        <h4>交互</h4>
+        <div class="setting-row">
+          <span class="setting-label">录音快捷键</span>
+          <span class="setting-value">⌘⇧M</span>
+        </div>
+        <div class="setting-row">
+          <span class="setting-label">交互音效</span>
+          <button class="toggle ${s.soundEffects ? 'on' : ''}" onclick="this.classList.toggle('on'); saveSetting('soundEffects', this.classList.contains('on'))"></button>
+        </div>
+      </div>
+
+      <div class="settings-section">
+        <h4>系统</h4>
+        <div class="setting-row">
+          <span class="setting-label">开机自启</span>
+          <button class="toggle ${s.launchAtLogin ? 'on' : ''}" onclick="this.classList.toggle('on'); saveSetting('launchAtLogin', this.classList.contains('on'))"></button>
+        </div>
+      </div>
+
+      <div class="settings-section">
+        <h4>账户</h4>
+        <div class="setting-row">
+          <span class="setting-label">API Key</span>
+          <span class="setting-value">
+            ${s.apiKey ? '✅ 已配置' : '❌ 未配置'}
+            <button class="btn-secondary" onclick="promptApiKey()">修改</button>
+          </span>
+        </div>
+      </div>
+
+      <div class="settings-section" style="text-align: center; padding-top: 8px;">
+        <span style="font-size: 11px; color: var(--text-muted);">Parla v0.1.0</span>
+      </div>
+    `;
+  });
+}
+
+function saveSetting(key, value) {
+  const update = {};
+  update[key] = value;
+  window.murmur.saveSettings(update);
+  if (key === "context") {
+    appState.context = value;
+    renderContextBar();
+  }
+}
+
+function promptApiKey() {
+  const key = prompt("输入 Groq API Key:", "");
+  if (key && key.startsWith("gsk_")) {
+    window.murmur.saveSettings({ apiKey: key });
+    renderSettings();
+  }
+}
+
+function escapeHtml(str) {
+  const div = document.createElement("div");
+  div.textContent = str;
+  return div.innerHTML;
+}
+</script>
+</body>
+</html>

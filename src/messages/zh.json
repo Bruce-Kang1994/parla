@@ -1,0 +1,142 @@
+{
+  "nav": {
+    "features": "功能",
+    "howItWorks": "使用方法",
+    "pricing": "价格",
+    "faq": "常见问题",
+    "download": "免费下载",
+    "webDemo": "在线体验"
+  },
+  "hero": {
+    "badge": "AI 驱动的语音输入工具",
+    "title1": "你说，",
+    "title2": "我来写。",
+    "subtitle": "用说话代替打字，写作速度提升 3 倍。Parla 在后台运行，按下快捷键即可在任何应用中语音输入 —— 自动去除口头禅、修正语法、格式化输出。",
+    "cta": "免费下载 macOS 版",
+    "secondaryCta": "在线体验",
+    "comingSoon": "Windows 版即将上线"
+  },
+  "demo": {
+    "youSaid": "你说的",
+    "processing": "处理中...",
+    "done": "完成",
+    "waiting": "等待中...",
+    "output": "Parla 输出"
+  },
+  "speed": {
+    "title1": "以",
+    "title2": "思维的速度",
+    "title3": "输入",
+    "subtitle": "平均打字速度 40 WPM，自然说话是 150 WPM。Parla 让你用说话代替打字，速度提升 3 倍以上，同时输出比手打更准确。",
+    "typing": "打字",
+    "regularStt": "普通语音转文字",
+    "murmur": "Parla（说话 + AI 润色）",
+    "subSecond": "亚秒级处理",
+    "aiPolished": "AI 润色输出",
+    "sameSpeed": "与语音转文字同速，但输出自动润色、格式化"
+  },
+  "features": {
+    "title1": "不只是听写。",
+    "title2": "是智能输入。",
+    "subtitle": "Parla 理解你的意图，输出你真正想写的文字。",
+    "smartCleanup": "智能清理",
+    "smartCleanupDesc": "自动去除「嗯」「那个」「就是」等口头禅，合并重复表达，识别自我纠正。你说得随意，输出很精炼。",
+    "contextAware": "场景感知",
+    "contextAwareDesc": "写邮件时更正式，聊微信时保持随意，写代码注释时保持技术性。Parla 根据当前应用自动调整语气。",
+    "languages": "100+ 种语言",
+    "languagesDesc": "中英日韩随意切换，甚至可以混着说。Whisper 模型自动识别语言，无需手动设置。",
+    "fast": "亚秒级响应",
+    "fastDesc": "松开快捷键到文字出现，延迟不到 1 秒。Groq 加速推理让语音识别比实时快 200 倍。",
+    "privacy": "隐私优先",
+    "privacyDesc": "音频处理后立即丢弃，不存储、不训练。未来将支持本地离线模型。",
+    "globalHotkey": "全局快捷键",
+    "globalHotkeyDesc": "自定义快捷键（默认 Fn），在任何应用中按下即可开始说话。松开后文字自动输入到光标位置。"
+  },
+  "howItWorks": {
+    "title": "使用方法",
+    "subtitle": "三步开始，一秒完成。",
+    "step1": "按下快捷键",
+    "step1Desc": "在任何应用中按住你设置的快捷键（如 Fn 键），开始说话。自然表达，不用刻意避免口头禅。",
+    "step2": "AI 润色",
+    "step2Desc": "Whisper 识别语音，LLM 自动清理口头禅、修正语法、调整格式。整个过程不到 1 秒。",
+    "step3": "自动输入",
+    "step3Desc": "松开快捷键，润色后的文字自动输入到光标位置。无需复制粘贴，直接写入当前应用。"
+  },
+  "worksEverywhere": {
+    "title": "在任何应用中使用",
+    "subtitle": "Parla 在后台静默运行，按下快捷键即可在当前应用中语音输入。"
+  },
+  "pricing": {
+    "title": "简单定价",
+    "subtitle": "免费开始使用，按需升级。",
+    "free": "免费版",
+    "freeDesc": "个人日常使用",
+    "perMonth": "/月",
+    "freeFeature1": "每天 30 分钟语音输入",
+    "freeFeature2": "100+ 种语言",
+    "freeFeature3": "智能润色",
+    "freeFeature4": "自定义快捷键",
+    "getStarted": "免费下载",
+    "popular": "推荐",
+    "pro": "专业版",
+    "proDesc": "重度使用者",
+    "proFeature1": "无限时长",
+    "proFeature2": "100+ 种语言",
+    "proFeature3": "优先处理速度",
+    "proFeature4": "自定义 AI 提示词",
+    "proFeature5": "历史记录与搜索",
+    "proFeature6": "API 接口",
+    "startTrial": "免费试用 7 天"
+  },
+  "faq": {
+    "title": "常见问题",
+    "q1": "识别准确度如何？",
+    "a1": "Parla 使用 Whisper large-v3 模型，是目前最准确的语音识别引擎之一。能处理口音、背景噪音和多语言混用。AI 润色层会进一步清理残留的口头禅和语法问题。",
+    "q2": "支持哪些操作系统？",
+    "a2": "目前支持 macOS。Windows 版正在开发中。你也可以先通过网页版体验核心功能。",
+    "q3": "支持哪些语言？",
+    "a3": "通过 Whisper 模型支持 100+ 种语言，包括中文、英文、日文、韩文等。你可以在同一段话中混用多种语言，无需手动切换。",
+    "q4": "我的语音数据安全吗？",
+    "a4": "安全。音频发送到云端处理后立即丢弃，不存储、不用于训练。未来将支持完全本地的离线模式。",
+    "q5": "和系统自带的听写有什么区别？",
+    "a5": "系统听写只是把你说的逐字转成文字，包括所有的「嗯」「那个」和说错的部分。Parla 多了一层 AI 润色：理解你的意图，去掉废话，自动格式化，输出可以直接用的文字。",
+    "q6": "快捷键可以自定义吗？",
+    "a6": "可以。安装后的 onboarding 流程中会引导你设置快捷键。默认是 Fn 键，你也可以改成任何你习惯的按键组合。"
+  },
+  "cta": {
+    "title1": "别再一个字一个字敲了。",
+    "title2": "说出来就好。",
+    "subtitle": "写作速度提升 3 倍。免费下载，立即体验。",
+    "button": "免费下载 Parla"
+  },
+  "footer": {
+    "tagline": "你说，我来写。"
+  },
+  "app": {
+    "general": "通用",
+    "email": "邮件",
+    "chat": "聊天",
+    "document": "文档",
+    "code": "代码",
+    "live": "实时",
+    "holdSpace": "按住 {key} 说话，松开结束",
+    "orClickMic": "或点击麦克风按钮。文字会自动复制到剪贴板。",
+    "copiedToClipboard": "已复制到剪贴板",
+    "history": "历史记录",
+    "clear": "清空",
+    "noHistory": "还没有录音。开始说话就能看到历史记录。",
+    "micDenied": "麦克风访问被拒绝。请在浏览器设置中允许麦克风权限。",
+    "somethingWrong": "出了点问题，请重试。"
+  },
+  "transcript": {
+    "polished": "润色结果",
+    "rawTranscript": "原始转录",
+    "hideRaw": "隐藏原始",
+    "showRaw": "显示原始"
+  },
+  "voice": {
+    "recording": "录音中...点击停止",
+    "processing": "处理中...",
+    "clickToStart": "点击开始"
+  }
+}

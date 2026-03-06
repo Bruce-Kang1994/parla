@@ -1,0 +1,50 @@
+{
+  "name": "parla-desktop",
+  "version": "0.1.0",
+  "description": "Parla 语音输入桌面客户端 — 开口即文字。",
+  "main": "main.js",
+  "author": "Parla",
+  "scripts": {
+    "start": "electron .",
+    "dev": "NODE_ENV=development electron .",
+    "build": "electron-builder --mac",
+    "build:dmg": "electron-builder --mac dmg"
+  },
+  "dependencies": {
+    "electron-store": "^11.0.2"
+  },
+  "devDependencies": {
+    "electron": "^35.0.0",
+    "electron-builder": "^26.8.1"
+  },
+  "build": {
+    "appId": "com.parla.desktop",
+    "productName": "Parla",
+    "mac": {
+      "category": "public.app-category.productivity",
+      "icon": "icon.icns",
+      "target": ["dmg"],
+      "hardenedRuntime": false,
+      "gatekeeperAssess": false,
+      "extendInfo": {
+        "NSMicrophoneUsageDescription": "Parla 需要麦克风权限来录制你的语音并转为文字。",
+        "LSUIElement": true
+      }
+    },
+    "dmg": {
+      "title": "Parla",
+      "contents": [
+        { "x": 130, "y": 220 },
+        { "x": 410, "y": 220, "type": "link", "path": "/Applications" }
+      ]
+    },
+    "files": [
+      "main.js",
+      "preload.js",
+      "index.html",
+      "icon.png",
+      "iconTemplate.png",
+      "iconTemplate@2x.png"
+    ]
+  }
+}

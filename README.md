@@ -1,36 +1,61 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Murmur — Say it. Done.
 
-## Getting Started
+AI voice dictation that removes filler words, fixes grammar, and formats your speech into clean, professional text — instantly.
 
-First, run the development server:
+## Quick Start
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open http://localhost:3000. The app runs in **mock mode** by default — no API keys needed.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## How It Works
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+1. Go to `/app`
+2. Hold **Space** to speak (or click the mic button)
+3. Release — polished text appears and is auto-copied to clipboard
 
-## Learn More
+## Switch to Real APIs
 
-To learn more about Next.js, take a look at the following resources:
+1. Copy `.env.example` to `.env.local`
+2. Get API keys:
+   - **Groq** (ASR): https://console.groq.com/keys
+   - **OpenAI** (LLM): https://platform.openai.com/api-keys
+3. Set `NEXT_PUBLIC_USE_MOCK=false` and fill in your keys
+4. Restart the dev server
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Tech Stack
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- **Framework:** Next.js 16 (App Router)
+- **ASR:** Groq Whisper large-v3-turbo ($0.04/hour)
+- **LLM:** OpenAI GPT-4o mini (post-processing)
+- **Styling:** Tailwind CSS v4
+- **Language:** TypeScript
 
-## Deploy on Vercel
+## Project Structure
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```
+src/
+├── app/
+│   ├── page.tsx              # Landing page
+│   ├── app/page.tsx          # Dictation workspace
+│   └── api/
+│       ├── transcribe/       # ASR endpoint (Groq Whisper / mock)
+│       └── polish/           # LLM endpoint (GPT-4o mini / mock)
+├── components/
+│   ├── VoiceButton.tsx       # Push-to-talk with pulse animation
+│   ├── WaveformVisualizer.tsx # Real-time audio bars
+│   └── TranscriptPanel.tsx   # Raw/polished output
+└── lib/
+    ├── types.ts
+    ├── prompts.ts            # LLM system prompts
+    └── mock.ts               # Demo data
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Docs
+
+- [PRD](docs/PRD.md) — Full product spec
+- [Product Review](docs/product-review-2026-03-06.md) — Competitive audit
+- [Pre-Delivery Gate](docs/pre-delivery-gate-2026-03-06.md) — Quality assessment
