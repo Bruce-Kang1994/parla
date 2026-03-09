@@ -2,7 +2,6 @@
 
 import { useState, useEffect, useRef } from "react";
 import { useTranslations } from "next-intl";
-import { Link } from "@/i18n/navigation";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
 import {
   Mic,
@@ -268,11 +267,8 @@ export default function LandingPage() {
           </div>
           <div className="flex items-center gap-2">
             <LanguageSwitcher />
-            <Link href="/app" className="hidden sm:inline-flex text-sm text-muted-foreground hover:text-foreground transition-colors px-3 py-1">
-              {t("nav.webDemo")}
-            </Link>
             <a href="#download" className="px-4 py-1.5 rounded-full bg-foreground hover:bg-foreground/90 text-background text-sm font-medium transition-all flex items-center gap-1.5">
-              <Download className="w-3.5 h-3.5" /> <span className="hidden sm:inline">{t("nav.download")}</span><span className="sm:hidden"><Download className="w-0 h-0" /></span>
+              <Download className="w-3.5 h-3.5" /> <span className="hidden sm:inline">{t("nav.download")}</span>
             </a>
             <button
               className="md:hidden p-1.5 text-muted-foreground hover:text-foreground"
@@ -288,7 +284,6 @@ export default function LandingPage() {
             <a href="#how" onClick={() => setMobileMenuOpen(false)} className="text-sm text-muted-foreground hover:text-foreground py-1.5">{t("nav.howItWorks")}</a>
             <a href="#pricing" onClick={() => setMobileMenuOpen(false)} className="text-sm text-muted-foreground hover:text-foreground py-1.5">{t("nav.pricing")}</a>
             <a href="#faq" onClick={() => setMobileMenuOpen(false)} className="text-sm text-muted-foreground hover:text-foreground py-1.5">{t("nav.faq")}</a>
-            <Link href="/app" onClick={() => setMobileMenuOpen(false)} className="text-sm text-muted-foreground hover:text-foreground py-1.5">{t("nav.webDemo")}</Link>
           </div>
         )}
       </nav>
@@ -310,15 +305,32 @@ export default function LandingPage() {
           <p className="mt-6 text-lg sm:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed animate-in fade-in slide-in-from-bottom-4 duration-700 delay-300">
             {t("hero.subtitle")}
           </p>
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mt-10 animate-in fade-in slide-in-from-bottom-4 duration-700 delay-500">
+          <div className="flex items-center justify-center mt-10 animate-in fade-in slide-in-from-bottom-4 duration-700 delay-500">
             <a href="#download" className="group px-8 py-3.5 rounded-full bg-foreground hover:bg-foreground/90 text-background text-lg font-semibold transition-all duration-200 hover:-translate-y-0.5 hover:shadow-xl hover:shadow-black/10 flex items-center gap-2">
               <Download className="w-5 h-5" /> {t("hero.cta")}
             </a>
-            <Link href="/app" className="px-8 py-3.5 rounded-full border border-border text-muted-foreground hover:text-foreground hover:border-muted-foreground font-medium text-lg transition-all">
-              {t("hero.secondaryCta")}
-            </Link>
           </div>
           <p className="text-xs text-muted-foreground/50 mt-4 animate-in fade-in duration-700 delay-700">{t("hero.comingSoon")}</p>
+          {/* Works with these apps */}
+          <div className="mt-10 animate-in fade-in duration-700 delay-700">
+            <p className="text-xs text-muted-foreground mb-3">{t("worksEverywhere.title")}</p>
+            <div className="flex flex-wrap items-center justify-center gap-3">
+              {[
+                { icon: <Terminal className="w-4 h-4" />, label: "Claude Code" },
+                { icon: <Code className="w-4 h-4" />, label: "Cursor" },
+                { icon: <Code className="w-4 h-4" />, label: "VS Code" },
+                { icon: <Monitor className="w-4 h-4" />, label: "Figma" },
+                { icon: <MessageSquare className="w-4 h-4" />, label: "Slack" },
+                { icon: <MessageSquare className="w-4 h-4" />, label: "WeChat" },
+                { icon: <FileText className="w-4 h-4" />, label: "Notion" },
+                { icon: <Mail className="w-4 h-4" />, label: "Gmail" },
+              ].map((app) => (
+                <span key={app.label} className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-surface border border-border text-xs text-muted-foreground">
+                  {app.icon} {app.label}
+                </span>
+              ))}
+            </div>
+          </div>
         </div>
         <div className="max-w-3xl mx-auto mt-16">
           <AnimatedDemo t={(key) => t(`demo.${key}`)} />
