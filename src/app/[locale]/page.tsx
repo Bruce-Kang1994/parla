@@ -207,31 +207,36 @@ function FAQItem({ q, a }: { q: string; a: string }) {
   );
 }
 
-const MARQUEE_APPS = [
-  { label: "Cursor", bg: "#1a1a2e", icon: <Code className="w-5 h-5 text-white" /> },
-  { label: "VS Code", bg: "#007ACC", icon: <Code className="w-5 h-5 text-white" /> },
-  { label: "Claude Code", bg: "#D4A574", icon: <Terminal className="w-5 h-5 text-white" /> },
-  { label: "Slack", bg: "#4A154B", icon: <MessageSquare className="w-5 h-5 text-white" /> },
-  { label: "Notion", bg: "#000000", icon: <FileText className="w-5 h-5 text-white" /> },
-  { label: "Figma", bg: "#A259FF", icon: <Monitor className="w-5 h-5 text-white" /> },
-  { label: "Gmail", bg: "#EA4335", icon: <Mail className="w-5 h-5 text-white" /> },
-  { label: "WeChat", bg: "#07C160", icon: <MessageSquare className="w-5 h-5 text-white" /> },
-  { label: "Discord", bg: "#5865F2", icon: <MessageSquare className="w-5 h-5 text-white" /> },
-  { label: "GitHub", bg: "#24292e", icon: <Code className="w-5 h-5 text-white" /> },
-  { label: "Linear", bg: "#5E6AD2", icon: <Zap className="w-5 h-5 text-white" /> },
-  { label: "Chrome", bg: "#4285F4", icon: <Globe className="w-5 h-5 text-white" /> },
-  { label: "Obsidian", bg: "#7C3AED", icon: <FileText className="w-5 h-5 text-white" /> },
-  { label: "Telegram", bg: "#0088CC", icon: <MessageSquare className="w-5 h-5 text-white" /> },
+/* Brand icon SVGs — simplified but recognizable */
+function BrandIcon({ d, viewBox = "0 0 24 24", fill = "currentColor", size = 24 }: { d: string; viewBox?: string; fill?: string; size?: number }) {
+  return <svg width={size} height={size} viewBox={viewBox} fill={fill}><path d={d} /></svg>;
+}
+
+const MARQUEE_ICONS: { label: string; bg: string; icon: React.ReactNode }[] = [
+  { label: "GitHub", bg: "#24292e", icon: <BrandIcon fill="#fff" d="M12 2C6.477 2 2 6.477 2 12c0 4.42 2.87 8.17 6.84 9.5.5.08.66-.23.66-.5v-1.69c-2.77.6-3.36-1.34-3.36-1.34-.46-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.87 1.52 2.34 1.07 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.55-1.11-4.55-4.92 0-1.11.38-2 1.03-2.71-.1-.25-.45-1.29.1-2.64 0 0 .84-.27 2.75 1.02A9.56 9.56 0 0112 6.8c.85 0 1.71.11 2.5.33 1.91-1.29 2.75-1.02 2.75-1.02.55 1.35.2 2.39.1 2.64.65.71 1.03 1.6 1.03 2.71 0 3.82-2.34 4.66-4.57 4.91.36.31.69.92.69 1.85V21c0 .27.16.59.67.5C19.14 20.16 22 16.42 22 12A10 10 0 0012 2z" /> },
+  { label: "LinkedIn", bg: "#0A66C2", icon: <BrandIcon fill="#fff" d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.064 2.064 0 11-.001-4.128 2.064 2.064 0 01.001 4.128zm1.782 13.019H3.555V9h3.564v11.452z" /> },
+  { label: "Slack", bg: "#4A154B", icon: <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M5.042 15.165a2.528 2.528 0 01-2.52 2.523A2.528 2.528 0 010 15.165a2.527 2.527 0 012.522-2.52h2.52v2.52zm1.271 0a2.527 2.527 0 012.521-2.52 2.527 2.527 0 012.521 2.52v6.313A2.528 2.528 0 018.834 24a2.528 2.528 0 01-2.521-2.522v-6.313zM8.834 5.042a2.528 2.528 0 01-2.521-2.52A2.528 2.528 0 018.834 0a2.528 2.528 0 012.521 2.522v2.52H8.834zm0 1.271a2.528 2.528 0 012.521 2.521 2.528 2.528 0 01-2.521 2.521H2.522A2.528 2.528 0 010 8.834a2.528 2.528 0 012.522-2.521h6.312zM18.956 8.834a2.528 2.528 0 012.522-2.521A2.528 2.528 0 0124 8.834a2.528 2.528 0 01-2.522 2.521h-2.522V8.834zm-1.27 0a2.528 2.528 0 01-2.523 2.521 2.527 2.527 0 01-2.52-2.521V2.522A2.527 2.527 0 0115.163 0a2.528 2.528 0 012.523 2.522v6.312zM15.163 18.956a2.528 2.528 0 012.523 2.522A2.528 2.528 0 0115.163 24a2.527 2.527 0 01-2.52-2.522v-2.522h2.52zm0-1.27a2.527 2.527 0 01-2.52-2.523 2.527 2.527 0 012.52-2.52h6.315A2.528 2.528 0 0124 15.163a2.528 2.528 0 01-2.522 2.523h-6.315z" fill="#fff"/></svg> },
+  { label: "Notion", bg: "#000", icon: <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M4.459 4.208c.746.606 1.026.56 2.428.466l13.215-.793c.28 0 .047-.28-.046-.326L18.1 2.161c-.42-.326-.98-.7-2.055-.607L3.01 2.621c-.467.047-.56.28-.374.466l1.823 1.121zm.793 3.08v13.904c0 .747.373 1.027 1.214.98l14.523-.84c.841-.046.935-.56.935-1.166V6.354c0-.606-.233-.933-.748-.886l-15.177.887c-.56.047-.747.327-.747.933zm14.337.745c.093.42 0 .84-.42.888l-.7.14v10.264c-.608.327-1.168.514-1.635.514-.748 0-.935-.234-1.495-.933l-4.577-7.186v6.952l1.449.327s0 .84-1.168.84l-3.222.187c-.093-.187 0-.653.327-.746l.84-.233V9.854L7.822 9.76c-.094-.42.14-1.026.793-1.073l3.456-.233 4.764 7.279v-6.44l-1.215-.14c-.093-.514.28-.886.747-.933l3.222-.187zM2.877 1.168l13.728-1.02c1.682-.14 2.1.093 2.8.607l3.876 2.708c.467.327.607.747.607 1.26v17.865c0 1.073-.373 1.726-1.729 1.82L6.147 25.35c-1.027.047-1.54-.093-2.054-.746L1.383 21.16c-.56-.7-.793-1.213-.793-1.866V2.848c0-.84.374-1.54 1.26-1.68z" fill="#fff" fillRule="evenodd"/></svg> },
+  { label: "Figma", bg: "#F24E1E", icon: <svg width="24" height="24" viewBox="0 0 24 24" fill="#fff"><path d="M15.852 8.981h-4.588V0h4.588c2.476 0 4.49 2.014 4.49 4.49s-2.014 4.491-4.49 4.491zM12.735 7.51h3.117c1.665 0 3.019-1.355 3.019-3.019s-1.354-3.019-3.019-3.019h-3.117V7.51zm0 8.943v-7.472h4.588c2.476 0 4.49 2.014 4.49 4.49s-2.014 4.49-4.49 4.49h-1.471a3.278 3.278 0 01-3.117-1.508zm1.471 0h3.117c1.665 0 3.019-1.354 3.019-3.019 0-1.665-1.354-3.019-3.019-3.019h-3.117v6.038zM8.148 8.981H3.56c-2.476 0-4.49-2.015-4.49-4.491S1.084 0 3.56 0h4.588v8.981zM3.56 1.471c-1.665 0-3.019 1.354-3.019 3.019s1.354 3.019 3.019 3.019h3.117V1.471H3.56zm4.588 22.058c-2.476 0-4.49-2.014-4.49-4.49s2.014-4.49 4.49-4.49h1.471c1.665 0 3.019 1.354 3.019 3.019v1.471c0 2.476-2.014 4.49-4.49 4.49zm0-7.509c-1.665 0-3.019 1.354-3.019 3.019s1.354 3.019 3.019 3.019 3.019-1.354 3.019-3.019v-3.019H8.148zm0-1.471H3.56c-2.476 0-4.49-2.014-4.49-4.49S1.084 9.57 3.56 9.57h4.588v11.979zM3.56 11.04c-1.665 0-3.019 1.354-3.019 3.019s1.354 3.019 3.019 3.019h3.117V11.04H3.56z"/></svg> },
+  { label: "VS Code", bg: "#007ACC", icon: <svg width="24" height="24" viewBox="0 0 24 24" fill="#fff"><path d="M23.15 2.587L18.21.21a1.494 1.494 0 00-1.705.29l-9.46 8.63-4.12-3.128a.999.999 0 00-1.276.057L.327 7.261A1 1 0 00.326 8.74L3.899 12 .326 15.26a1 1 0 00.001 1.479L1.65 17.94a.999.999 0 001.276.057l4.12-3.128 9.46 8.63a1.492 1.492 0 001.704.29l4.942-2.377A1.5 1.5 0 0024 20.06V3.939a1.5 1.5 0 00-.85-1.352zm-5.146 14.861L10.826 12l7.178-5.448v10.896z"/></svg> },
+  { label: "Discord", bg: "#5865F2", icon: <BrandIcon fill="#fff" d="M20.317 4.37a19.791 19.791 0 00-4.885-1.515.074.074 0 00-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 00-5.487 0 12.64 12.64 0 00-.617-1.25.077.077 0 00-.079-.037A19.736 19.736 0 003.677 4.37a.07.07 0 00-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 00.031.057 19.9 19.9 0 005.993 3.03.078.078 0 00.084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 00-.041-.106 13.107 13.107 0 01-1.872-.892.077.077 0 01-.008-.128 10.2 10.2 0 00.372-.292.074.074 0 01.077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 01.078.01c.12.098.246.198.373.292a.077.077 0 01-.006.127 12.299 12.299 0 01-1.873.892.077.077 0 00-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 00.084.028 19.839 19.839 0 006.002-3.03.077.077 0 00.032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 00-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z" /> },
+  { label: "Gmail", bg: "#EA4335", icon: <svg width="24" height="24" viewBox="0 0 24 24" fill="#fff"><path d="M24 5.457v13.909c0 .904-.732 1.636-1.636 1.636h-3.819V11.73L12 16.64l-6.545-4.91v9.273H1.636A1.636 1.636 0 010 19.366V5.457c0-2.023 2.309-3.178 3.927-1.964L5.455 4.64 12 9.548l6.545-4.91 1.528-1.145C21.69 2.28 24 3.434 24 5.457z"/></svg> },
+  { label: "Chrome", bg: "#4285F4", icon: <svg width="24" height="24" viewBox="0 0 24 24" fill="#fff"><path d="M12 0C8.21 0 4.831 1.757 2.632 4.501l3.953 6.848A5.454 5.454 0 0112 6.545h10.691A12 12 0 0012 0zM1.931 5.47A11.943 11.943 0 000 12c0 6.012 4.42 10.991 10.189 11.864l3.953-6.847a5.45 5.45 0 01-6.865-2.29L1.931 5.47zm13.342 2.166a5.446 5.446 0 011.272 7.348l-3.956 6.85A12.014 12.014 0 0024 12c0-1.54-.29-3.011-.818-4.364h-7.909zM12 8.009a3.991 3.991 0 100 7.982 3.991 3.991 0 000-7.982z"/></svg> },
+  { label: "Cursor", bg: "#000", icon: <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M5.5 3l13 9-13 9V3z" fill="#fff"/></svg> },
+  { label: "Obsidian", bg: "#7C3AED", icon: <svg width="24" height="24" viewBox="0 0 24 24" fill="#fff"><path d="M12 1L3 7.5V16.5L12 23L21 16.5V7.5L12 1ZM12 3.5L18.5 8L12 12.5L5.5 8L12 3.5ZM5 9.5L11.5 14V20.5L5 16V9.5ZM12.5 20.5V14L19 9.5V16L12.5 20.5Z"/></svg> },
+  { label: "Telegram", bg: "#26A5E4", icon: <BrandIcon fill="#fff" d="M11.944 0A12 12 0 000 12a12 12 0 0012 12 12 12 0 0012-12A12 12 0 0012 0a12 12 0 00-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 01.171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.479.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z" /> },
+  { label: "WeChat", bg: "#07C160", icon: <svg width="24" height="24" viewBox="0 0 24 24" fill="#fff"><path d="M8.691 2.188C3.891 2.188 0 5.476 0 9.53c0 2.212 1.17 4.203 3.002 5.55a.59.59 0 01.213.665l-.39 1.48c-.019.07-.048.141-.048.213 0 .163.13.295.29.295a.326.326 0 00.167-.054l1.903-1.114a.864.864 0 01.717-.098 10.16 10.16 0 002.837.403c.276 0 .543-.027.811-.05-.857-2.578.157-4.972 1.932-6.446 1.703-1.415 3.882-1.98 5.853-1.838-.576-3.583-4.196-6.348-8.596-6.348zM5.785 5.991c.642 0 1.162.529 1.162 1.18a1.17 1.17 0 01-1.162 1.178A1.17 1.17 0 014.623 7.17c0-.651.52-1.18 1.162-1.18zm5.813 0c.642 0 1.162.529 1.162 1.18a1.17 1.17 0 01-1.162 1.178 1.17 1.17 0 01-1.162-1.178c0-.651.52-1.18 1.162-1.18zm3.97 2.885c-4.102 0-7.438 2.804-7.438 6.258 0 3.453 3.336 6.258 7.438 6.258.818 0 1.602-.12 2.338-.341a.72.72 0 01.586.08l1.544.907a.263.263 0 00.135.044c.131 0 .237-.108.237-.241 0-.06-.023-.117-.039-.174l-.314-1.197a.487.487 0 01.175-.543c1.507-1.106 2.476-2.735 2.476-4.543 0-3.454-3.336-6.258-7.438-6.258zm-2.063 3.11c.534 0 .968.44.968.982a.976.976 0 01-.968.983.976.976 0 01-.969-.983c0-.542.434-.982.969-.982zm4.127 0c.534 0 .968.44.968.982a.976.976 0 01-.968.983.976.976 0 01-.969-.983c0-.542.434-.982.969-.982z"/></svg> },
+  { label: "Linear", bg: "#5E6AD2", icon: <svg width="24" height="24" viewBox="0 0 24 24" fill="#fff"><path d="M1.04 11.2a.985.985 0 00.237 1.07l10.453 10.453a.985.985 0 001.07.237A11.966 11.966 0 0024 12c0-6.627-5.373-12-12-12C5.862 0 1.15 7.036 1.04 11.2zM12 3.6A8.4 8.4 0 0120.4 12 8.4 8.4 0 0112 20.4a8.371 8.371 0 01-4.996-1.643L16.757 9.004a1.2 1.2 0 000-1.697l-.064-.064a1.2 1.2 0 00-1.697 0L5.243 17.004A8.371 8.371 0 013.6 12 8.4 8.4 0 0112 3.6z"/></svg> },
 ];
 
 function AppMarquee() {
   return (
-    <div className="w-screen relative left-1/2 -translate-x-1/2 overflow-hidden bg-foreground py-5">
+    <div className="w-screen relative left-1/2 -translate-x-1/2 overflow-hidden py-8">
       <div className="flex animate-marquee">
-        {[...MARQUEE_APPS, ...MARQUEE_APPS].map((app, i) => (
-          <div key={`${app.label}-${i}`} className="flex-shrink-0 mx-4">
+        {[...MARQUEE_ICONS, ...MARQUEE_ICONS].map((app, i) => (
+          <div key={`${app.label}-${i}`} className="flex-shrink-0 mx-5">
             <div
-              className="w-10 h-10 rounded-xl flex items-center justify-center shadow-sm"
+              className="w-11 h-11 rounded-[12px] flex items-center justify-center"
               style={{ backgroundColor: app.bg }}
               title={app.label}
             >
@@ -261,17 +266,6 @@ export default function LandingPage() {
     { step: "01", icon: <Keyboard className="w-8 h-8" />, title: t("howItWorks.step1"), desc: t("howItWorks.step1Desc") },
     { step: "02", icon: <Sparkles className="w-8 h-8" />, title: t("howItWorks.step2"), desc: t("howItWorks.step2Desc") },
     { step: "03", icon: <Zap className="w-8 h-8" />, title: t("howItWorks.step3"), desc: t("howItWorks.step3Desc") },
-  ];
-
-  const apps = [
-    { icon: <Terminal className="w-5 h-5" />, label: "Claude Code", color: "text-amber-500" },
-    { icon: <Code className="w-5 h-5" />, label: "Cursor", color: "text-purple-400" },
-    { icon: <Monitor className="w-5 h-5" />, label: "Figma", color: "text-pink-400" },
-    { icon: <MessageSquare className="w-5 h-5" />, label: "WeChat", color: "text-emerald-400" },
-    { icon: <Code className="w-5 h-5" />, label: "VS Code", color: "text-blue-400" },
-    { icon: <MessageSquare className="w-5 h-5" />, label: "Slack", color: "text-green-400" },
-    { icon: <FileText className="w-5 h-5" />, label: "Notion", color: "text-amber-400" },
-    { icon: <Mail className="w-5 h-5" />, label: "Gmail", color: "text-sky-400" },
   ];
 
   const faqItems = [
@@ -348,10 +342,6 @@ export default function LandingPage() {
             </a>
           </div>
           <p className="text-xs text-muted-foreground/50 mt-4 animate-in fade-in duration-700 delay-700">{t("hero.comingSoon")}</p>
-          {/* Works with these apps — marquee */}
-          <div className="mt-14 animate-in fade-in duration-700 delay-700">
-            <AppMarquee />
-          </div>
         </div>
         <div className="max-w-3xl mx-auto mt-16">
           <AnimatedDemo t={(key) => t(`demo.${key}`)} />
@@ -421,21 +411,14 @@ export default function LandingPage() {
       </section>
 
       {/* Works everywhere */}
-      <section className="py-24 px-6">
-        <div className="max-w-4xl mx-auto">
-          <div className="text-center mb-12">
+      <section className="py-24">
+        <div className="max-w-4xl mx-auto px-6">
+          <div className="text-center mb-8">
             <h2 className="text-3xl sm:text-4xl font-bold mb-4">{t("worksEverywhere.title")}</h2>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">{t("worksEverywhere.subtitle")}</p>
           </div>
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
-            {apps.map((item) => (
-              <div key={item.label} className="bg-surface border border-border rounded-xl p-4 sm:p-5 text-center hover:border-accent/30 transition-all">
-                <div className={`${item.color} flex justify-center mb-2`}>{item.icon}</div>
-                <span className="text-xs sm:text-sm font-medium">{item.label}</span>
-              </div>
-            ))}
-          </div>
         </div>
+        <AppMarquee />
       </section>
 
       {/* Pricing */}
