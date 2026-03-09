@@ -207,6 +207,43 @@ function FAQItem({ q, a }: { q: string; a: string }) {
   );
 }
 
+const MARQUEE_APPS = [
+  { label: "Cursor", bg: "#1a1a2e", icon: <Code className="w-5 h-5 text-white" /> },
+  { label: "VS Code", bg: "#007ACC", icon: <Code className="w-5 h-5 text-white" /> },
+  { label: "Claude Code", bg: "#D4A574", icon: <Terminal className="w-5 h-5 text-white" /> },
+  { label: "Slack", bg: "#4A154B", icon: <MessageSquare className="w-5 h-5 text-white" /> },
+  { label: "Notion", bg: "#000000", icon: <FileText className="w-5 h-5 text-white" /> },
+  { label: "Figma", bg: "#A259FF", icon: <Monitor className="w-5 h-5 text-white" /> },
+  { label: "Gmail", bg: "#EA4335", icon: <Mail className="w-5 h-5 text-white" /> },
+  { label: "WeChat", bg: "#07C160", icon: <MessageSquare className="w-5 h-5 text-white" /> },
+  { label: "Discord", bg: "#5865F2", icon: <MessageSquare className="w-5 h-5 text-white" /> },
+  { label: "GitHub", bg: "#24292e", icon: <Code className="w-5 h-5 text-white" /> },
+  { label: "Linear", bg: "#5E6AD2", icon: <Zap className="w-5 h-5 text-white" /> },
+  { label: "Chrome", bg: "#4285F4", icon: <Globe className="w-5 h-5 text-white" /> },
+  { label: "Obsidian", bg: "#7C3AED", icon: <FileText className="w-5 h-5 text-white" /> },
+  { label: "Telegram", bg: "#0088CC", icon: <MessageSquare className="w-5 h-5 text-white" /> },
+];
+
+function AppMarquee() {
+  return (
+    <div className="w-screen relative left-1/2 -translate-x-1/2 overflow-hidden bg-foreground py-5">
+      <div className="flex animate-marquee">
+        {[...MARQUEE_APPS, ...MARQUEE_APPS].map((app, i) => (
+          <div key={`${app.label}-${i}`} className="flex-shrink-0 mx-4">
+            <div
+              className="w-10 h-10 rounded-xl flex items-center justify-center shadow-sm"
+              style={{ backgroundColor: app.bg }}
+              title={app.label}
+            >
+              {app.icon}
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 export default function LandingPage() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const t = useTranslations();
@@ -311,25 +348,9 @@ export default function LandingPage() {
             </a>
           </div>
           <p className="text-xs text-muted-foreground/50 mt-4 animate-in fade-in duration-700 delay-700">{t("hero.comingSoon")}</p>
-          {/* Works with these apps */}
-          <div className="mt-10 animate-in fade-in duration-700 delay-700">
-            <p className="text-xs text-muted-foreground mb-3">{t("worksEverywhere.title")}</p>
-            <div className="flex flex-wrap items-center justify-center gap-3">
-              {[
-                { icon: <Terminal className="w-4 h-4" />, label: "Claude Code" },
-                { icon: <Code className="w-4 h-4" />, label: "Cursor" },
-                { icon: <Code className="w-4 h-4" />, label: "VS Code" },
-                { icon: <Monitor className="w-4 h-4" />, label: "Figma" },
-                { icon: <MessageSquare className="w-4 h-4" />, label: "Slack" },
-                { icon: <MessageSquare className="w-4 h-4" />, label: "WeChat" },
-                { icon: <FileText className="w-4 h-4" />, label: "Notion" },
-                { icon: <Mail className="w-4 h-4" />, label: "Gmail" },
-              ].map((app) => (
-                <span key={app.label} className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-surface border border-border text-xs text-muted-foreground">
-                  {app.icon} {app.label}
-                </span>
-              ))}
-            </div>
+          {/* Works with these apps — marquee */}
+          <div className="mt-14 animate-in fade-in duration-700 delay-700">
+            <AppMarquee />
           </div>
         </div>
         <div className="max-w-3xl mx-auto mt-16">

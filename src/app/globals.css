@@ -102,6 +102,16 @@ html {
   box-shadow: 0 4px 16px rgba(255, 218, 115, 0.4);
 }
 
+/* Marquee scroll */
+@keyframes marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+.animate-marquee {
+  animation: marquee 25s linear infinite;
+  width: max-content;
+}
+
 /* Selection */
 ::selection {
   background: rgba(99, 102, 241, 0.2);
