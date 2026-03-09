@@ -1,0 +1,146 @@
+{
+  "nav": {
+    "features": "Funktionen",
+    "howItWorks": "So funktioniert's",
+    "pricing": "Preise",
+    "faq": "FAQ",
+    "download": "Für macOS herunterladen",
+    "webDemo": "Im Browser testen"
+  },
+  "hero": {
+    "badge": "KI-gestützte Spracheingabe",
+    "title1": "Sprich.",
+    "title2": "Es ist geschrieben.",
+    "subtitle": "Tippen Sie 3x schneller per Sprache. Drücken Sie eine Tastenkombination, um in jeder App per Stimme zu schreiben — Füllwörter werden entfernt, Grammatik korrigiert und die Ausgabe automatisch formatiert.",
+    "cta": "Für macOS herunterladen",
+    "secondaryCta": "Im Browser testen",
+    "comingSoon": "Bald für macOS",
+    "systemReq": "macOS 12+ · Apple Silicon & Intel"
+  },
+  "demo": {
+    "youSaid": "Sie sagten",
+    "processing": "Verarbeitung...",
+    "done": "Fertig",
+    "waiting": "Warten...",
+    "output": "Parla-Ausgabe"
+  },
+  "speed": {
+    "title1": "Tippe mit der Geschwindigkeit deiner ",
+    "title2": "Gedanken",
+    "title3": ".",
+    "subtitle": "Die durchschnittliche Tippgeschwindigkeit beträgt 40 WPM. Natürliches Sprechen liegt bei 150 WPM. Parla gibt Ihnen die 3-fache Geschwindigkeit und liefert saubereren Text, als Sie tippen würden.",
+    "typing": "Tippen",
+    "regularStt": "Normale Spracherkennung",
+    "murmur": "Parla Spracheingabe",
+    "aiPolished": "KI-optimierte Ausgabe",
+    "subSecond": "Unter einer Sekunde",
+    "sameSpeed": "Gleiche Geschwindigkeit, automatisch poliert"
+  },
+  "features": {
+    "title1": "Nicht nur Diktat.",
+    "title2": "Intelligenz.",
+    "subtitle": "Parla versteht Ihre Absicht und gibt aus, was Sie wirklich meinen.",
+    "smartCleanup": "Intelligente Bereinigung",
+    "smartCleanupDesc": "Entfernt automatisch Füllwörter wie 'äh' und 'ähm', fasst Wiederholungen zusammen und erkennt Selbstkorrekturen. Sprechen Sie ungezwungen, erhalten Sie polierte Ergebnisse.",
+    "contextAware": "Kontextbewusst",
+    "contextAwareDesc": "Formell für E-Mails, locker für Chats, technisch für Code-Kommentare. Parla passt den Ton an die aktive App an.",
+    "languages": "100+ Sprachen",
+    "languagesDesc": "Wechseln Sie frei zwischen Sprachen, sogar innerhalb eines Satzes. Whisper erkennt die Sprache automatisch, ohne manuelle Einrichtung.",
+    "fast": "Antwort in unter einer Sekunde",
+    "fastDesc": "Weniger als 1 Sekunde vom Loslassen der Taste bis der Text erscheint. Groq-beschleunigte Inferenz läuft 200x schneller als Echtzeit.",
+    "privacy": "Datenschutz zuerst",
+    "privacyDesc": "Audio wird sofort nach der Verarbeitung verworfen. Niemals gespeichert, niemals für Training verwendet. Lokale Offline-Modellunterstützung kommt bald.",
+    "globalHotkey": "Globale Tastenkombination",
+    "globalHotkeyDesc": "Benutzerdefinierte Tastenkombination (Standard: Fn) funktioniert in jeder App. Gedrückt halten zum Sprechen, loslassen zum automatischen Einfügen des Textes an der Cursorposition."
+  },
+  "howItWorks": {
+    "title": "So funktioniert's",
+    "subtitle": "Drei Schritte zum Starten. Eine Sekunde bis zum Ergebnis.",
+    "step1": "Taste drücken",
+    "step1Desc": "Halten Sie Ihre konfigurierte Taste (z. B. Fn) in einer beliebigen App gedrückt und beginnen Sie zu sprechen. Reden Sie natürlich, Füllwörter stören nicht.",
+    "step2": "KI-Optimierung",
+    "step2Desc": "Whisper transkribiert Ihre Sprache, dann entfernt ein LLM Füllwörter, korrigiert die Grammatik und formatiert die Ausgabe. Alles in unter 1 Sekunde.",
+    "step3": "Automatisches Einfügen",
+    "step3Desc": "Lassen Sie die Taste los und der optimierte Text wird automatisch an Ihrer Cursorposition eingefügt. Kein Kopieren und Einfügen nötig, es wird direkt in die aktive App geschrieben."
+  },
+  "worksEverywhere": {
+    "title": "Funktioniert in jeder App",
+    "subtitle": "Parla läuft lautlos im Hintergrund. Drücken Sie die Taste, um in der gerade verwendeten App per Stimme zu schreiben."
+  },
+  "pricing": {
+    "title": "Einfache Preise",
+    "subtitle": "Kostenlos starten. Upgraden, wenn Sie mehr brauchen.",
+    "free": "Free",
+    "freeDesc": "Für den täglichen persönlichen Gebrauch",
+    "perMonth": "/Monat",
+    "freeFeature1": "10.000 Zeichen pro Woche",
+    "freeFeature2": "100+ Sprachen",
+    "freeFeature3": "Intelligente Optimierung",
+    "freeFeature4": "Benutzerdefinierte Tastenkombination",
+    "freePrice": "0 €",
+    "proPrice": "8 €",
+    "proAnnual": "oder 69 €/Jahr (27 € sparen)",
+    "getStarted": "Herunterladen",
+    "popular": "Empfohlen",
+    "pro": "Pro",
+    "proDesc": "Für Vielnutzer",
+    "proFeature1": "Unbegrenzte Nutzung",
+    "proFeature2": "100+ Sprachen",
+    "proFeature3": "Priorisierte Verarbeitung",
+    "proFeature4": "Benutzerdefinierte KI-Prompts",
+    "proFeature5": "Verlauf & Suche",
+    "proFeature6": "API-Zugang",
+    "startTrial": "7-Tage-Testversion starten"
+  },
+  "faq": {
+    "title": "Häufig gestellte Fragen",
+    "q1": "Wie genau ist die Erkennung?",
+    "a1": "Parla verwendet Whisper large-v3, eine der genauesten Spracherkennungs-Engines. Sie bewältigt Akzente, Hintergrundgeräusche und mehrsprachige Eingaben. Die KI-Optimierungsschicht bereinigt zusätzlich verbleibende Füllwörter und Grammatikfehler.",
+    "q2": "Welche Betriebssysteme werden unterstützt?",
+    "a2": "Derzeit wird macOS 12+ unterstützt, kompatibel mit Apple Silicon und Intel. Windows ist in Entwicklung.",
+    "q3": "Welche Sprachen werden unterstützt?",
+    "a3": "Über 100 Sprachen über das Whisper-Modell, darunter Deutsch, Englisch, Chinesisch, Japanisch, Koreanisch und mehr. Sie können mehrere Sprachen im selben Satz mischen, ohne manuell umschalten zu müssen.",
+    "q4": "Sind meine Sprachdaten sicher?",
+    "a4": "Ja. Audio wird sofort nach der Cloud-Verarbeitung verworfen. Niemals gespeichert, niemals für Training verwendet. Ein vollständiger Offline-Modus ist für die Zukunft geplant.",
+    "q5": "Was unterscheidet Parla vom eingebauten Diktat?",
+    "a5": "Das eingebaute Diktat transkribiert Wort für Wort, einschliesslich aller 'Ähms', Fehlstarts und Versprecher. Parla fügt eine KI-Schicht hinzu: Es versteht Ihre Absicht, entfernt Füllwörter, formatiert automatisch und liefert sofort verwendbaren Text.",
+    "q6": "Kann ich die Tastenkombination anpassen?",
+    "a6": "Ja. Der Einrichtungsassistent führt Sie durch die Konfiguration der Tastenkombination. Standard ist Fn, aber Sie können jede beliebige Tastenkombination wählen."
+  },
+  "cta": {
+    "title1": "Schluss mit Buchstabe für Buchstabe.",
+    "title2": "Einfach sprechen.",
+    "subtitle": "3x schneller schreiben. Jetzt herunterladen und ausprobieren.",
+    "button": "Für macOS herunterladen"
+  },
+  "footer": {
+    "tagline": "Sprechen. Geschrieben."
+  },
+  "app": {
+    "general": "Allgemein",
+    "email": "E-Mail",
+    "chat": "Chat",
+    "document": "Dokument",
+    "code": "Code",
+    "live": "Live",
+    "holdSpace": "{key} gedrückt halten zum Sprechen, loslassen zum Beenden",
+    "orClickMic": "Oder klicken Sie auf die Mikrofontaste. Der Text wird automatisch in Ihre Zwischenablage kopiert.",
+    "copiedToClipboard": "In Zwischenablage kopiert",
+    "history": "Verlauf",
+    "clear": "Löschen",
+    "noHistory": "Noch keine Aufnahmen. Beginnen Sie zu sprechen, um Ihren Verlauf zu sehen.",
+    "micDenied": "Mikrofonzugriff verweigert. Bitte erlauben Sie den Mikrofonzugriff in Ihren Browsereinstellungen.",
+    "somethingWrong": "Etwas ist schiefgelaufen. Bitte versuchen Sie es erneut."
+  },
+  "transcript": {
+    "polished": "Optimiert",
+    "rawTranscript": "Rohtranskript",
+    "hideRaw": "Roh ausblenden",
+    "showRaw": "Roh anzeigen"
+  },
+  "voice": {
+    "recording": "Aufnahme... klicken zum Stoppen",
+    "processing": "Verarbeitung...",
+    "clickToStart": "Klicken zum Starten"
+  }
+}

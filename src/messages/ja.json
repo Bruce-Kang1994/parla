@@ -4,17 +4,18 @@
     "howItWorks": "使い方",
     "pricing": "料金",
     "faq": "よくある質問",
-    "download": "無料ダウンロード",
-    "webDemo": "Web デモ"
+    "download": "macOS版をダウンロード",
+    "webDemo": "ブラウザで試す"
   },
   "hero": {
-    "badge": "AI搭載の音声入力ツール",
-    "title1": "あなたが話す、",
-    "title2": "私が書く。",
-    "subtitle": "話すだけでタイピングの3倍速く書ける。Parlaはバックグラウンドで動作し、ホットキーを押すだけであらゆるアプリで音声入力 — フィラーワード除去、文法修正、自動フォーマット。",
-    "cta": "macOS版を無料ダウンロード",
-    "secondaryCta": "Webデモを試す",
-    "comingSoon": "Windows版は近日公開"
+    "badge": "AI搭載の音声入力",
+    "title1": "話すだけで、",
+    "title2": "文字になる。",
+    "subtitle": "話すだけでタイピングの3倍速く書ける。ホットキーを押して話すだけ — フィラーワード除去、文法修正、カーソル位置に自動入力。",
+    "cta": "macOS版をダウンロード",
+    "secondaryCta": "ブラウザで試す",
+    "comingSoon": "macOS版 近日公開",
+    "systemReq": "macOS 12+ · Apple Silicon & Intel"
   },
   "demo": {
     "youSaid": "あなたが話した内容",
@@ -24,16 +25,16 @@
     "output": "Parla出力"
   },
   "speed": {
-    "title1": "",
-    "title2": "思考の速度",
-    "title3": "で入力",
-    "subtitle": "平均タイピング速度は40WPM、自然な話し言葉は150WPM。Parlaなら3倍以上のスピードアップを実現しながら、手打ちより正確なテキストを生成します。",
+    "title1": "思考の速さで、",
+    "title2": "入力する",
+    "title3": "。",
+    "subtitle": "平均タイピング速度は40WPM、自然な話し言葉は150WPM。Parlaなら3倍のスピードアップを実現しながら、手打ちより正確なテキストを生成します。",
     "typing": "タイピング",
-    "regularStt": "通常の音声テキスト変換",
-    "murmur": "Parla（話す + AI仕上げ）",
-    "subSecond": "1秒未満の処理",
+    "regularStt": "通常の音声認識",
+    "murmur": "Parla音声入力",
     "aiPolished": "AI仕上げ出力",
-    "sameSpeed": "音声テキスト変換と同じ速度で、自動的に仕上げ・フォーマット"
+    "subSecond": "1秒未満の遅延",
+    "sameSpeed": "音声と同速、自動校正"
   },
   "features": {
     "title1": "ただの文字起こしではない。",
@@ -72,11 +73,14 @@
     "free": "無料版",
     "freeDesc": "日常の個人利用に",
     "perMonth": "/月",
-    "freeFeature1": "1日30分の音声入力",
+    "freeFeature1": "週10,000文字",
     "freeFeature2": "100以上の言語",
     "freeFeature3": "スマート仕上げ",
     "freeFeature4": "カスタムホットキー",
-    "getStarted": "無料ダウンロード",
+    "freePrice": "無料",
+    "proPrice": "$8",
+    "proAnnual": "または$69/年（$27お得）",
+    "getStarted": "ダウンロード",
     "popular": "おすすめ",
     "pro": "プロ版",
     "proDesc": "ヘビーユーザー向け",
@@ -93,7 +97,7 @@
     "q1": "認識精度はどうですか？",
     "a1": "ParlaはWhisper large-v3モデルを使用しており、最も正確な音声認識エンジンの一つです。アクセント、背景ノイズ、多言語混合にも対応。AI仕上げ層がフィラーワードや文法の問題をさらにクリーンアップします。",
     "q2": "対応OSは？",
-    "a2": "現在macOSに対応しています。Windows版は開発中です。Webデモでコア機能を先に体験することもできます。",
+    "a2": "現在macOS 12+に対応、Apple SiliconとIntelの両方をサポート。Windows版は開発中です。",
     "q3": "対応言語は？",
     "a3": "Whisperモデルにより100以上の言語に対応。日本語、中国語、英語、韓国語など。同じ文の中で複数の言語を混ぜて話しても、手動切り替え不要です。",
     "q4": "音声データは安全ですか？",
@@ -106,11 +110,11 @@
   "cta": {
     "title1": "一文字ずつ打つのはもうやめよう。",
     "title2": "話すだけでいい。",
-    "subtitle": "書く速度が3倍に。無料ダウンロードで、今すぐ体験。",
-    "button": "Parlaを無料ダウンロード"
+    "subtitle": "書く速度が3倍に。ダウンロードして今すぐ体験。",
+    "button": "macOS版をダウンロード"
   },
   "footer": {
-    "tagline": "あなたが話す、私が書く。"
+    "tagline": "話すだけで、文字になる。"
   },
   "app": {
     "general": "一般",

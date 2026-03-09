@@ -1,21 +1,27 @@
 {
   "name": "parla-desktop",
-  "version": "0.1.0",
-  "description": "Parla 语音输入桌面客户端 — 开口即文字。",
+  "version": "0.2.0",
+  "description": "Parla 语音输入桌面客户端",
   "main": "main.js",
   "author": "Parla",
   "scripts": {
     "start": "electron .",
-    "dev": "NODE_ENV=development electron .",
-    "build": "electron-builder --mac",
-    "build:dmg": "electron-builder --mac dmg"
+    "dev": "VITE_DEV_SERVER_URL=http://localhost:5173 electron .",
+    "renderer:dev": "cd renderer && npx vite",
+    "renderer:build": "cd renderer && npx vite build",
+    "build": "npm run renderer:build && electron-builder --mac",
+    "build:dmg": "npm run renderer:build && electron-builder --mac dmg"
   },
   "dependencies": {
     "electron-store": "^11.0.2"
   },
   "devDependencies": {
+    "@vitejs/plugin-react": "^4.3.0",
     "electron": "^35.0.0",
-    "electron-builder": "^26.8.1"
+    "electron-builder": "^26.8.1",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "vite": "^6.3.0"
   },
   "build": {
     "appId": "com.parla.desktop",
@@ -23,12 +29,14 @@
     "mac": {
       "category": "public.app-category.productivity",
       "icon": "icon.icns",
-      "target": ["dmg"],
+      "target": [
+        "dmg"
+      ],
       "hardenedRuntime": false,
       "gatekeeperAssess": false,
       "extendInfo": {
         "NSMicrophoneUsageDescription": "Parla 需要麦克风权限来录制你的语音并转为文字。",
-        "LSUIElement": true
+        "LSUIElement": false
       }
     },
     "dmg": {
@@ -41,7 +49,8 @@
     "files": [
       "main.js",
       "preload.js",
-      "index.html",
+      "float.html",
+      "renderer/dist/**/*",
       "icon.png",
       "iconTemplate.png",
       "iconTemplate@2x.png"

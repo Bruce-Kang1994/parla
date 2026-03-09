@@ -1,0 +1,146 @@
+{
+  "nav": {
+    "features": "Funciones",
+    "howItWorks": "Cómo funciona",
+    "pricing": "Precios",
+    "faq": "Preguntas frecuentes",
+    "download": "Descargar para macOS",
+    "webDemo": "Probar en el navegador"
+  },
+  "hero": {
+    "badge": "Entrada de voz con IA",
+    "title1": "Habla.",
+    "title2": "Ya está escrito.",
+    "subtitle": "Escribe 3 veces más rápido hablando. Pulsa un atajo de teclado para dictar en cualquier app: sin muletillas, con gramática corregida y formato automático.",
+    "cta": "Descargar para macOS",
+    "secondaryCta": "Probar en el navegador",
+    "comingSoon": "Próximamente para macOS",
+    "systemReq": "macOS 12+ · Apple Silicon e Intel"
+  },
+  "demo": {
+    "youSaid": "Dijiste",
+    "processing": "Procesando...",
+    "done": "Listo",
+    "waiting": "Esperando...",
+    "output": "Resultado de Parla"
+  },
+  "speed": {
+    "title1": "Escribe a la velocidad del ",
+    "title2": "pensamiento",
+    "title3": ".",
+    "subtitle": "La velocidad media de escritura es de 40 PPM. El habla natural alcanza 150 PPM. Parla te da 3 veces más velocidad con un texto más limpio del que escribirías a mano.",
+    "typing": "Escritura",
+    "regularStt": "Reconocimiento de voz estándar",
+    "murmur": "Entrada de voz Parla",
+    "aiPolished": "Texto pulido por IA",
+    "subSecond": "Latencia inferior a 1 segundo",
+    "sameSpeed": "Misma velocidad, resultado pulido automáticamente"
+  },
+  "features": {
+    "title1": "No es solo dictado.",
+    "title2": "Es inteligencia.",
+    "subtitle": "Parla entiende tu intención y produce exactamente lo que quieres decir.",
+    "smartCleanup": "Limpieza inteligente",
+    "smartCleanupDesc": "Elimina automáticamente muletillas como \"eh\" y \"mm\", fusiona repeticiones y detecta autocorrecciones. Habla con naturalidad, obtén un texto pulido.",
+    "contextAware": "Adaptación al contexto",
+    "contextAwareDesc": "Formal para correos, informal para chat, técnico para comentarios de código. Parla adapta el tono según la app activa.",
+    "languages": "Más de 100 idiomas",
+    "languagesDesc": "Cambia de idioma libremente, incluso mézclalos en una misma frase. Whisper detecta el idioma automáticamente sin configuración manual.",
+    "fast": "Respuesta en menos de un segundo",
+    "fastDesc": "Menos de 1 segundo desde que sueltas el atajo hasta que aparece el texto. La inferencia acelerada por Groq es 200 veces más rápida que en tiempo real.",
+    "privacy": "Privacidad ante todo",
+    "privacyDesc": "El audio se descarta inmediatamente tras el procesamiento. Nunca se almacena, nunca se usa para entrenamiento. Pronto habrá soporte para modelo local sin conexión.",
+    "globalHotkey": "Atajo global",
+    "globalHotkeyDesc": "Un atajo personalizable (por defecto Fn) que funciona en cualquier app. Mantén pulsado para hablar, suelta para insertar el texto en la posición del cursor."
+  },
+  "howItWorks": {
+    "title": "Cómo funciona",
+    "subtitle": "Tres pasos para empezar. Un segundo para terminar.",
+    "step1": "Pulsa el atajo",
+    "step1Desc": "Mantén pulsado el atajo configurado (p. ej. Fn) en cualquier app y empieza a hablar. Habla con naturalidad, no hace falta evitar muletillas.",
+    "step2": "La IA pule el texto",
+    "step2Desc": "Whisper transcribe tu voz y luego un LLM elimina muletillas, corrige la gramática y da formato al resultado. Todo en menos de 1 segundo.",
+    "step3": "Inserción automática",
+    "step3Desc": "Suelta el atajo y el texto pulido se inserta automáticamente en la posición del cursor. Sin copiar y pegar, escribe directamente en la app activa."
+  },
+  "worksEverywhere": {
+    "title": "Funciona en cualquier app",
+    "subtitle": "Parla se ejecuta silenciosamente en segundo plano. Pulsa el atajo para dictar en la app que estés usando."
+  },
+  "pricing": {
+    "title": "Precios sencillos",
+    "subtitle": "Empieza gratis. Mejora cuando necesites más.",
+    "free": "Gratis",
+    "freeDesc": "Para uso personal diario",
+    "perMonth": "/mes",
+    "freeFeature1": "10.000 caracteres por semana",
+    "freeFeature2": "Más de 100 idiomas",
+    "freeFeature3": "Pulido inteligente",
+    "freeFeature4": "Atajo personalizable",
+    "freePrice": "0 €",
+    "proPrice": "8 €",
+    "proAnnual": "o 69 €/año (ahorra 27 €)",
+    "getStarted": "Descargar",
+    "popular": "Recomendado",
+    "pro": "Pro",
+    "proDesc": "Para usuarios avanzados",
+    "proFeature1": "Uso ilimitado",
+    "proFeature2": "Más de 100 idiomas",
+    "proFeature3": "Procesamiento prioritario",
+    "proFeature4": "Indicaciones de IA personalizadas",
+    "proFeature5": "Historial y búsqueda",
+    "proFeature6": "Acceso a la API",
+    "startTrial": "Prueba gratuita de 7 días"
+  },
+  "faq": {
+    "title": "Preguntas frecuentes",
+    "q1": "¿Qué tan preciso es el reconocimiento?",
+    "a1": "Parla usa Whisper large-v3, uno de los motores de reconocimiento de voz más precisos. Maneja acentos, ruido de fondo y mezcla de idiomas. La capa de pulido con IA limpia además cualquier muletilla o error gramatical restante.",
+    "q2": "¿Qué sistemas operativos son compatibles?",
+    "a2": "Actualmente es compatible con macOS 12+, tanto Apple Silicon como Intel. La versión para Windows está en desarrollo.",
+    "q3": "¿Qué idiomas son compatibles?",
+    "a3": "Más de 100 idiomas gracias al modelo Whisper, incluidos chino, inglés, japonés, coreano y muchos más. Puedes mezclar varios idiomas en la misma frase sin cambiar nada manualmente.",
+    "q4": "¿Mis datos de voz están seguros?",
+    "a4": "Sí. El audio se descarta inmediatamente después del procesamiento en la nube. Nunca se almacena, nunca se usa para entrenamiento. El modo completamente sin conexión está previsto para el futuro.",
+    "q5": "¿En qué se diferencia del dictado integrado?",
+    "a5": "El dictado integrado transcribe palabra por palabra, incluyendo todos los \"eh\", falsos comienzos y errores. Parla añade una capa de IA: entiende tu intención, elimina muletillas, da formato automáticamente y produce texto listo para usar.",
+    "q6": "¿Puedo personalizar el atajo de teclado?",
+    "a6": "Sí. El proceso de configuración inicial te guía para elegir tu atajo. Por defecto es Fn, pero puedes cambiarlo a cualquier combinación de teclas que prefieras."
+  },
+  "cta": {
+    "title1": "Deja de escribir letra por letra.",
+    "title2": "Solo habla.",
+    "subtitle": "Escribe 3 veces más rápido. Descarga y pruébalo ahora.",
+    "button": "Descargar para macOS"
+  },
+  "footer": {
+    "tagline": "Habla. Está escrito."
+  },
+  "app": {
+    "general": "General",
+    "email": "Correo",
+    "chat": "Chat",
+    "document": "Documento",
+    "code": "Código",
+    "live": "En vivo",
+    "holdSpace": "Mantén {key} para hablar, suelta para terminar",
+    "orClickMic": "O pulsa el botón del micrófono. El texto se copia automáticamente al portapapeles.",
+    "copiedToClipboard": "Copiado al portapapeles",
+    "history": "Historial",
+    "clear": "Borrar",
+    "noHistory": "Aún no hay grabaciones. Empieza a hablar para ver tu historial.",
+    "micDenied": "Acceso al micrófono denegado. Permite el acceso al micrófono en la configuración de tu navegador.",
+    "somethingWrong": "Algo salió mal. Inténtalo de nuevo."
+  },
+  "transcript": {
+    "polished": "Pulido",
+    "rawTranscript": "Transcripción original",
+    "hideRaw": "Ocultar original",
+    "showRaw": "Mostrar original"
+  },
+  "voice": {
+    "recording": "Grabando... pulsa para detener",
+    "processing": "Procesando...",
+    "clickToStart": "Pulsa para empezar"
+  }
+}

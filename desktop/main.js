@@ -10,11 +10,15 @@ const {
   systemPreferences,
   shell,
   Notification,
+  screen,
 } = require("electron");
 const path = require("path");
-const { execSync } = require("child_process");
-const { writeFileSync, unlinkSync } = require("fs");
-const { tmpdir } = require("os");
+const { exec } = require("child_process");
+const { promisify } = require("util");
+const execAsync = promisify(exec);
+
+// Allow audio playback without user gesture (for beep sounds)
+app.commandLine.appendSwitch("autoplay-policy", "no-user-gesture-required");
 
 // --- Store (settings persistence) ---
 let store;
@@ -22,28 +26,36 @@ async function initStore() {
   const Store = (await import("electron-store")).default;
   store = new Store({
     defaults: {
-      apiKey: "",
       shortcut: "CommandOrControl+Shift+M",
       context: "general",
       language: "auto",
       outputLanguage: "auto",
+      audioDevice: "default",
       soundEffects: true,
+      theme: "system",
+      showInDock: true,
       launchAtLogin: false,
       onboardingDone: false,
       history: [],
       weeklyUsage: { count: 0, resetAt: getNextMonday() },
       stats: { totalDuration: 0, totalChars: 0, totalSessions: 0 },
+      // Auth & Backend
+      apiBase: "",
+      authToken: "",
+      authRefreshToken: "",
+      authEmail: "",
+      userPlan: "free",
     },
   });
 }
 
 function getNextMonday() {
   const now = new Date();
-  const day = now.getDay();
+  const day = now.getUTCDay();
   const diff = day === 0 ? 1 : 8 - day;
-  const next = new Date(now);
-  next.setDate(now.getDate() + diff);
-  next.setHours(0, 0, 0, 0);
+  const next = new Date(Date.UTC(
+    now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate() + diff
+  ));
   return next.toISOString();
 }
 
@@ -66,33 +78,82 @@ function getUsage() {
   return store.get("weeklyUsage");
 }
 
-const FREE_LIMIT = 10000; // 10,000 chars/week
+const FREE_LIMIT = 6000;
+
+// --- Backend API (uses native fetch, no shell injection risk) ---
+function getApiBase() {
+  // Priority: env var > store > default
+  return (
+    process.env.PARLA_API_BASE ||
+    (store && store.get("apiBase")) ||
+    "https://parla.vercel.app/api"
+  );
+}
+
+async function apiFetch(path, options = {}) {
+  const base = getApiBase();
+  const token = store.get("authToken");
+  const headers = { "Content-Type": "application/json", ...options.headers };
+  if (token) headers["Authorization"] = `Bearer ${token}`;
+  const res = await fetch(`${base}${path}`, {
+    ...options,
+    headers,
+    signal: AbortSignal.timeout(options.timeout || 10000),
+  });
+  return res.json();
+}
+
+// Sync usage to backend (fire-and-forget)
+async function syncUsageToBackend(chars) {
+  if (!store.get("authToken")) return;
+  try {
+    await apiFetch("/user/usage", {
+      method: "POST",
+      body: JSON.stringify({ chars }),
+    });
+  } catch {
+    // 离线也不影响本地功能
+  }
+}
+
+// Fetch profile from backend
+async function fetchProfile() {
+  if (!store.get("authToken")) return null;
+  try {
+    const data = await apiFetch("/user/profile");
+    if (data.error) return null;
+    return data;
+  } catch {
+    return null;
+  }
+}
 
 // --- App State ---
 let tray = null;
 let mainWin = null;
-let isCurrentlyRecording = false;
+let floatWin = null;
+let isRecording = false;
+let isQuitting = false;
 
 // --- App Lifecycle ---
 app.whenReady().then(async () => {
   await initStore();
-
-  // Show dock icon — Parla is a full desktop app
-  // if (process.platform === "darwin") app.dock.hide();
-
   createTray();
   createMainWindow();
-  registerShortcuts();
+  createFloatWindow();
+  console.log("[Parla] App ready.");
+});
 
-  console.log("[Parla] Ready. Press", store.get("shortcut"), "to record.");
+app.on("before-quit", () => {
+  isQuitting = true;
 });
 
 app.on("will-quit", () => {
   globalShortcut.unregisterAll();
 });
 
-app.on("window-all-closed", (e) => {
-  e.preventDefault();
+app.on("window-all-closed", () => {
+  // Don't quit — keep running in tray
 });
 
 // --- Tray ---
@@ -108,23 +169,27 @@ function createTray() {
   }
 
   tray = new Tray(icon);
-  tray.setToolTip("Parla 语音输入");
-  updateTrayMenu();
+  tray.setToolTip("Parla");
 
   tray.on("click", () => {
-    showMainWindow();
+    handleToggle();
+  });
+
+  tray.on("right-click", () => {
+    updateTrayMenu();
+    tray.popUpContextMenu();
   });
 }
 
 function updateTrayMenu() {
   const usage = getUsage();
   const menu = Menu.buildFromTemplate([
-    { label: "Parla 语音输入", enabled: false },
+    { label: "Parla", enabled: false },
     { type: "separator" },
     {
-      label: isCurrentlyRecording ? "⏹ 停止录音" : "🎤 开始录音",
+      label: isRecording ? "停止录音" : "开始录音",
       accelerator: store.get("shortcut"),
-      click: () => sendToggle(),
+      click: () => handleToggle(),
     },
     { type: "separator" },
     {
@@ -132,6 +197,10 @@ function updateTrayMenu() {
       enabled: false,
     },
     { type: "separator" },
+    {
+      label: "打开 Parla",
+      click: () => showMainWindow(),
+    },
     {
       label: "设置",
       click: () => {
@@ -148,10 +217,10 @@ function updateTrayMenu() {
 // --- Main Window ---
 function createMainWindow() {
   mainWin = new BrowserWindow({
-    width: 940,
-    height: 640,
-    minWidth: 720,
-    minHeight: 480,
+    width: 1120,
+    height: 760,
+    minWidth: 800,
+    minHeight: 560,
     show: false,
     titleBarStyle: "hiddenInset",
     trafficLightPosition: { x: 16, y: 18 },
@@ -164,27 +233,41 @@ function createMainWindow() {
     },
   });
 
-  mainWin.loadFile(path.join(__dirname, "index.html"));
+  // Dev: load from Vite dev server; Prod: load built files
+  const devURL = process.env.VITE_DEV_SERVER_URL;
+  if (devURL) {
+    mainWin.loadURL(devURL);
+    mainWin.webContents.openDevTools({ mode: "detach" });
+  } else {
+    mainWin.loadFile(path.join(__dirname, "renderer", "dist", "index.html"));
+  }
 
   mainWin.webContents.on("did-finish-load", () => {
-    const onboardingDone = store.get("onboardingDone");
-    const apiKey = store.get("apiKey");
-
     mainWin.webContents.send("init", {
-      onboardingDone,
-      apiKey: apiKey ? "configured" : "",
+      onboardingDone: store.get("onboardingDone"),
       shortcut: store.get("shortcut"),
       context: store.get("context"),
       language: store.get("language"),
       outputLanguage: store.get("outputLanguage"),
+      audioDevice: store.get("audioDevice"),
       soundEffects: store.get("soundEffects"),
+      theme: store.get("theme"),
+      showInDock: store.get("showInDock"),
       usage: getUsage(),
       freeLimit: FREE_LIMIT,
       history: store.get("history").slice(0, 50),
       stats: store.get("stats"),
     });
 
+    registerShortcuts();
     mainWin.show();
+  });
+
+  mainWin.on("close", (e) => {
+    if (!isQuitting) {
+      e.preventDefault();
+      mainWin.hide();
+    }
   });
 }
 
@@ -194,154 +277,228 @@ function showMainWindow() {
   mainWin.focus();
 }
 
-function sendToggle() {
-  if (!mainWin.isVisible()) {
-    showMainWindow();
+// --- Float Window ---
+function createFloatWindow() {
+  const { width: screenW } = screen.getPrimaryDisplay().workAreaSize;
+
+  floatWin = new BrowserWindow({
+    width: 380,
+    height: 88,
+    x: Math.round((screenW - 380) / 2),
+    y: 60,
+    frame: false,
+    transparent: true,
+    alwaysOnTop: true,
+    resizable: false,
+    skipTaskbar: true,
+    show: false,
+    hasShadow: false,
+    focusable: false,
+    webPreferences: {
+      preload: path.join(__dirname, "preload.js"),
+      contextIsolation: true,
+      nodeIntegration: false,
+    },
+  });
+
+  floatWin.setVisibleOnAllWorkspaces(true, { visibleOnFullScreen: true });
+  floatWin.loadFile(path.join(__dirname, "float.html"));
+}
+
+function showFloat(state) {
+  if (!floatWin) return;
+  // Attach sound preference to state
+  state.soundEnabled = store.get("soundEffects") !== false;
+  floatWin.webContents.send("float-update", state);
+  if (!floatWin.isVisible()) {
+    floatWin.showInactive();
   }
-  mainWin.webContents.send("toggle-recording");
+}
+
+function hideFloat() {
+  if (!floatWin) return;
+  floatWin.webContents.send("float-update", { status: "hide" });
+  setTimeout(() => {
+    if (floatWin && floatWin.isVisible()) floatWin.hide();
+  }, 300);
+}
+
+// --- Recording Toggle ---
+function handleToggle() {
+  if (!isRecording) {
+    // Start recording
+    isRecording = true;
+    if (tray) tray.setTitle("●");
+    showFloat({ status: "listening", context: store.get("context") || "general" });
+    if (mainWin) mainWin.webContents.send("toggle-recording");
+  } else {
+    // Stop recording
+    isRecording = false;
+    if (tray) tray.setTitle("");
+    showFloat({ status: "processing" });
+    if (mainWin) mainWin.webContents.send("toggle-recording");
+  }
 }
 
 // --- Global Shortcuts ---
 function registerShortcuts() {
   const shortcut = store.get("shortcut");
+  globalShortcut.unregisterAll();
+  if (!shortcut) return;
+
+  // Modifier-only shortcuts use renderer-side detection
+  if (shortcut.startsWith("__modifier__:")) {
+    const modKey = shortcut.split(":")[1];
+    startModifierKeyListener(modKey);
+    return;
+  }
+
   try {
-    globalShortcut.unregisterAll();
-    const ok = globalShortcut.register(shortcut, () => sendToggle());
-    if (!ok) console.error("[Parla] Failed to register shortcut:", shortcut);
+    const ok = globalShortcut.register(shortcut, () => {
+      console.log("[Parla] Shortcut triggered:", shortcut);
+      handleToggle();
+    });
+    if (!ok) {
+      console.error("[Parla] Failed to register shortcut:", shortcut);
+      if (mainWin) {
+        mainWin.webContents.send("shortcut-conflict", shortcut);
+      }
+    }
   } catch (e) {
     console.error("[Parla] Shortcut error:", e.message);
   }
 }
 
-// --- Embedded API: Transcribe ---
-function transcribeAudio(audioPath) {
-  const apiKey = store.get("apiKey");
-  if (!apiKey) throw new Error("NO_API_KEY");
-
-  const result = execSync(
-    `curl -s https://api.groq.com/openai/v1/audio/transcriptions ` +
-      `-H "Authorization: Bearer ${apiKey}" ` +
-      `-F "file=@${audioPath}" ` +
-      `-F "model=whisper-large-v3-turbo" ` +
-      `-F "response_format=verbose_json"`,
-    { timeout: 30000 }
-  ).toString();
-
-  const data = JSON.parse(result);
-  if (data.error) throw new Error(data.error.message || "Groq API error");
-  return { raw: data.text, language: data.language || "auto", duration: data.duration || 0 };
+function startModifierKeyListener(modKey) {
+  if (!mainWin) return;
+  const keyName = modKey === "CommandOrControl" ? "Meta" : modKey;
+  mainWin.webContents.executeJavaScript(`
+    (function() {
+      if (window.__modShortcutCleanup) window.__modShortcutCleanup();
+      let held = false, otherPressed = false;
+      function onDown(e) {
+        if (e.key === "${keyName}") { held = true; otherPressed = false; }
+        else if (held) { otherPressed = true; }
+      }
+      function onUp(e) {
+        if (e.key === "${keyName}" && held && !otherPressed) {
+          window.murmur.toggleRecording && window.murmur.toggleRecording();
+        }
+        if (e.key === "${keyName}") held = false;
+      }
+      document.addEventListener("keydown", onDown, true);
+      document.addEventListener("keyup", onUp, true);
+      window.__modShortcutCleanup = () => {
+        document.removeEventListener("keydown", onDown, true);
+        document.removeEventListener("keyup", onUp, true);
+      };
+    })();
+  `).catch(() => {});
 }
 
-// --- Embedded API: Polish ---
-function polishText(raw, context = "general") {
-  const apiKey = store.get("apiKey");
-  if (!apiKey) throw new Error("NO_API_KEY");
-
-  const prompt = buildPolishPrompt(context);
-  const payload = JSON.stringify({
-    model: "llama-3.3-70b-versatile",
-    messages: [
-      { role: "system", content: prompt },
-      { role: "user", content: raw },
-    ],
-    temperature: 0,
-    max_tokens: 2048,
+// --- Backend API: Process Audio (Groq ASR + Polish) ---
+async function processAudioViaBackend(audioBase64, context, language) {
+  const base = getApiBase();
+  const authToken = store.get("authToken");
+  const res = await fetch(`${base}/process-audio`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ audioBase64, context, language, authToken }),
+    signal: AbortSignal.timeout(60000),
   });
-
-  const result = execSync(
-    `curl -s https://api.groq.com/openai/v1/chat/completions ` +
-      `-H "Content-Type: application/json" ` +
-      `-H "Authorization: Bearer ${apiKey}" ` +
-      `-d ${shellEscape(payload)}`,
-    { timeout: 30000 }
-  ).toString();
-
-  const data = JSON.parse(result);
-  if (data.error) throw new Error(data.error.message || "LLM error");
-  return data.choices[0]?.message?.content?.trim() || raw;
+  const data = await res.json();
+  data._httpStatus = res.status;
+  return data;
 }
 
-function shellEscape(str) {
-  return "'" + str.replace(/'/g, "'\\''") + "'";
-}
+// --- Async text insertion (Bug 7: 保存并恢复剪贴板) ---
+async function pasteText(textToInsert) {
+  // 保存用户原有剪贴板内容
+  const prevText = clipboard.readText();
+  const prevHtml = clipboard.readHTML();
+  const prevImage = clipboard.readImage();
 
-function buildPolishPrompt(context) {
-  const ctxMap = {
-    email: "Format as a professional email body. Use proper greeting/closing if implied.",
-    chat: "Keep it concise and conversational. Use short sentences.",
-    document: "Format as well-structured prose with proper paragraphs and punctuation.",
-    code: "Format as a code comment or documentation. Be precise and technical.",
-    general: "Format as clean, natural text.",
-  };
-
-  return `You are a voice-to-text cleanup tool. Your ONLY job is to clean up raw speech transcription. You must preserve ALL original content and meaning.
-
-STRICT RULES:
-1. Remove filler words: um, uh, like, you know, 嗯, 啊, 那个, 就是, えーと, 음
-2. When the speaker corrects themselves ("no wait", "I mean", "不对", "应该是"), keep ONLY the corrected version
-3. Merge repeated/stuttered phrases into one clean version
-4. Add proper punctuation
-5. If the speaker lists items, format as a list
-
-ABSOLUTE PROHIBITIONS:
-- NEVER summarize or shorten the content
-- NEVER add information not in the original
-- NEVER change the meaning or intent
-- NEVER rephrase sentences in your own words
-- NEVER translate between languages
-- NEVER omit any topic or point the speaker mentioned
-- If the speaker said 10 things, the output must contain all 10 things
-
-The output should read like what the speaker INTENDED to write, not a summary of what they said.
-
-Context: ${ctxMap[context] || ctxMap.general}
-Tone: Use clear, professional language without being overly formal.
-
-Output ONLY the cleaned text. No explanations, no prefixes like "Here is the polished text:".`;
-}
-
-// --- Embedded API: Validate Key ---
-function validateApiKey(key) {
   try {
-    const result = execSync(
-      `curl -s -o /dev/null -w "%{http_code}" https://api.groq.com/openai/v1/models ` +
-        `-H "Authorization: Bearer ${key}"`,
-      { timeout: 10000 }
-    ).toString().trim();
-    return result === "200";
-  } catch {
-    return false;
+    clipboard.writeText(textToInsert);
+    await execAsync(
+      `osascript -e 'tell application "System Events" to keystroke "v" using command down'`,
+      { timeout: 5000 }
+    );
+
+    // 延迟恢复剪贴板（等粘贴完成）
+    setTimeout(() => {
+      if (!prevImage.isEmpty()) {
+        clipboard.writeImage(prevImage);
+      } else if (prevHtml && prevHtml !== '<meta charset=\'utf-8\'>') {
+        clipboard.write({ text: prevText, html: prevHtml });
+      } else {
+        clipboard.writeText(prevText);
+      }
+    }, 500);
+  } catch (e) {
+    console.error("[Parla] Paste failed:", e.message);
+    // 即使粘贴失败也恢复剪贴板
+    clipboard.writeText(prevText);
+    new Notification({
+      title: "Parla",
+      body: "无法插入文本，请在系统设置中授予辅助功能权限",
+    }).show();
   }
 }
 
 // --- IPC Handlers ---
 
-// Process audio blob (receive as base64 from renderer)
+// Process audio (receive as base64 from renderer, forward to backend)
 ipcMain.handle("process-audio", async (_event, { audioBase64, context }) => {
-  // Check usage limit
   const usage = getUsage();
   if (usage.count >= FREE_LIMIT) {
+    showFloat({ status: "error", text: "本周额度已用完，请升级 Pro 继续使用" });
+    setTimeout(() => hideFloat(), 3000);
     return { error: "LIMIT_REACHED", usage };
   }
 
-  let tmpPath = "";
   try {
-    // Write audio to temp file
-    tmpPath = path.join(tmpdir(), `parla_${Date.now()}.webm`);
-    writeFileSync(tmpPath, Buffer.from(audioBase64, "base64"));
+    const language = store.get("language") || "auto";
+    const result = await processAudioViaBackend(audioBase64, context, language);
 
-    // Step 1: Transcribe
-    const { raw, language, duration } = transcribeAudio(tmpPath);
-    if (!raw || !raw.trim()) return { error: "NO_SPEECH" };
+    if (result.error) {
+      let errText = result.error;
+      if (result.error === "NO_SPEECH") {
+        errText = "未检测到声音，请靠近麦克风或提高音量后重试";
+      } else if (result.error === "LIMIT_REACHED") {
+        errText = "本周额度已用完，请升级 Pro 继续使用";
+      } else if (result.error === "登录已过期" || result._httpStatus === 401) {
+        errText = "登录已过期，请重新登录";
+        showMainWindow();
+        if (mainWin) mainWin.webContents.send("navigate", "settings");
+      } else if (result.error === "请先登录") {
+        errText = "请先登录后使用";
+        showMainWindow();
+        if (mainWin) mainWin.webContents.send("navigate", "settings");
+      }
+      showFloat({ status: "error", text: errText });
+      setTimeout(() => hideFloat(), 3000);
+      return result;
+    }
 
-    // Step 2: Polish
-    const polished = polishText(raw, context);
-    const finalText = polished || raw;
+    const finalText = result.polished || result.transcript;
 
-    // Track usage + stats
+    // Auto-insert at cursor
+    await pasteText(finalText);
+
+    // Update float
+    showFloat({ status: "done", text: finalText });
+    setTimeout(() => hideFloat(), 1500);
+
+    // Track usage + stats locally
     addUsage(finalText.length);
-    const stats = store.get("stats") || { totalDuration: 0, totalChars: 0, totalSessions: 0 };
-    stats.totalDuration += duration;
+    syncUsageToBackend(finalText.length);
+    const stats = store.get("stats") || {
+      totalDuration: 0,
+      totalChars: 0,
+      totalSessions: 0,
+    };
+    stats.totalDuration += result.duration || 0;
     stats.totalChars += finalText.length;
     stats.totalSessions += 1;
     store.set("stats", stats);
@@ -350,51 +507,41 @@ ipcMain.handle("process-audio", async (_event, { audioBase64, context }) => {
     const historyItem = {
       id: Date.now().toString(),
       timestamp: Date.now(),
-      raw,
+      raw: result.transcript,
       polished: finalText,
       context,
-      duration,
-      language,
+      duration: result.duration || 0,
+      language: result.language || "auto",
     };
     const history = store.get("history");
     history.unshift(historyItem);
     store.set("history", history.slice(0, 100));
 
     return {
-      raw,
+      raw: result.transcript,
       polished: finalText,
-      language,
-      duration,
+      language: result.language,
+      duration: result.duration,
       usage: getUsage(),
     };
   } catch (err) {
     console.error("[Parla] Process error:", err.message);
-    if (err.message === "NO_API_KEY") return { error: "NO_API_KEY" };
-    return { error: err.message };
-  } finally {
-    if (tmpPath) {
-      try { unlinkSync(tmpPath); } catch {}
-    }
+    const isNetworkError =
+      err.name === "AbortError" ||
+      err.name === "TypeError" ||
+      err.message?.includes("fetch");
+    const errText = isNetworkError
+      ? "网络连接失败，请检查网络后重试"
+      : err.message;
+    showFloat({ status: "error", text: errText });
+    setTimeout(() => hideFloat(), 3000);
+    return { error: errText };
   }
 });
 
 // Insert text at cursor
-ipcMain.on("insert-text", (_event, text) => {
-  clipboard.writeText(text);
-
-  setTimeout(() => {
-    try {
-      execSync(
-        `osascript -e 'tell application "System Events" to keystroke "v" using command down'`
-      );
-    } catch (e) {
-      console.error("[Parla] Paste failed. Grant Accessibility permission.");
-      new Notification({
-        title: "Parla",
-        body: "无法插入文本，请在「系统设置 → 隐私与安全 → 辅助功能」中授权 Parla",
-      }).show();
-    }
-  }, 200);
+ipcMain.on("insert-text", async (_event, text) => {
+  await pasteText(text);
 });
 
 ipcMain.on("copy-text", (_event, text) => {
@@ -402,15 +549,30 @@ ipcMain.on("copy-text", (_event, text) => {
 });
 
 ipcMain.on("recording-state", (_event, recording) => {
-  isCurrentlyRecording = recording;
+  isRecording = recording;
+  if (tray) tray.setTitle(recording ? "●" : "");
   updateTrayMenu();
 });
 
+ipcMain.on("toggle-recording-from-renderer", () => {
+  handleToggle();
+});
+
 ipcMain.handle("get-stats", () => {
-  const stats = store.get("stats") || { totalDuration: 0, totalChars: 0, totalSessions: 0 };
-  const durationMin = Math.round(stats.totalDuration / 60 * 10) / 10;
-  const avgSpeed = stats.totalDuration > 0 ? Math.round(stats.totalChars / (stats.totalDuration / 60)) : 0;
-  const timeSavedMin = Math.round(stats.totalChars / 40 - stats.totalDuration / 60);
+  const stats = store.get("stats") || {
+    totalDuration: 0,
+    totalChars: 0,
+    totalSessions: 0,
+  };
+  const durationMin =
+    Math.round((stats.totalDuration / 60) * 10) / 10;
+  const avgSpeed =
+    stats.totalDuration > 0
+      ? Math.round(stats.totalChars / (stats.totalDuration / 60))
+      : 0;
+  const timeSavedMin = Math.round(
+    stats.totalChars / 40 - stats.totalDuration / 60
+  );
   return {
     totalDuration: stats.totalDuration,
     totalDurationMin: durationMin,
@@ -422,17 +584,19 @@ ipcMain.handle("get-stats", () => {
 });
 
 ipcMain.on("hide-window", () => {
-  mainWin.hide();
+  if (mainWin) mainWin.hide();
 });
 
 // Settings
 ipcMain.handle("get-settings", () => ({
-  apiKey: store.get("apiKey") ? "configured" : "",
   shortcut: store.get("shortcut"),
   context: store.get("context"),
   language: store.get("language"),
   outputLanguage: store.get("outputLanguage"),
+  audioDevice: store.get("audioDevice"),
   soundEffects: store.get("soundEffects"),
+  theme: store.get("theme"),
+  showInDock: store.get("showInDock"),
   launchAtLogin: store.get("launchAtLogin"),
   onboardingDone: store.get("onboardingDone"),
   usage: getUsage(),
@@ -441,35 +605,61 @@ ipcMain.handle("get-settings", () => ({
 }));
 
 ipcMain.handle("save-settings", (_event, settings) => {
-  if (settings.apiKey !== undefined && settings.apiKey !== "configured") {
-    store.set("apiKey", settings.apiKey);
-  }
-  if (settings.shortcut) {
+  if (settings.shortcut !== undefined) {
     store.set("shortcut", settings.shortcut);
     registerShortcuts();
   }
-  if (settings.context) store.set("context", settings.context);
-  if (settings.language) store.set("language", settings.language);
-  if (settings.outputLanguage) store.set("outputLanguage", settings.outputLanguage);
-  if (settings.soundEffects !== undefined) store.set("soundEffects", settings.soundEffects);
+  if (settings.context !== undefined) store.set("context", settings.context);
+  if (settings.language !== undefined) store.set("language", settings.language);
+  if (settings.outputLanguage !== undefined)
+    store.set("outputLanguage", settings.outputLanguage);
+  if (settings.audioDevice !== undefined)
+    store.set("audioDevice", settings.audioDevice);
+  if (settings.soundEffects !== undefined)
+    store.set("soundEffects", settings.soundEffects);
+  if (settings.theme !== undefined) {
+    store.set("theme", settings.theme);
+    if (mainWin) mainWin.webContents.send("theme-changed", settings.theme);
+  }
+  if (settings.showInDock !== undefined) {
+    store.set("showInDock", settings.showInDock);
+    if (process.platform === "darwin") {
+      if (settings.showInDock) app.dock.show();
+      else app.dock.hide();
+    }
+  }
   if (settings.launchAtLogin !== undefined) {
     store.set("launchAtLogin", settings.launchAtLogin);
     app.setLoginItemSettings({ openAtLogin: settings.launchAtLogin });
   }
-  if (settings.onboardingDone !== undefined) store.set("onboardingDone", settings.onboardingDone);
+  if (settings.onboardingDone !== undefined)
+    store.set("onboardingDone", settings.onboardingDone);
   return true;
 });
 
-ipcMain.handle("validate-api-key", (_event, key) => {
-  return validateApiKey(key);
+// Audio devices
+ipcMain.handle("get-audio-devices", async () => {
+  try {
+    const devices = await mainWin.webContents.executeJavaScript(`
+      navigator.mediaDevices.enumerateDevices().then(ds =>
+        ds.filter(d => d.kind === "audioinput").map(d => ({
+          deviceId: d.deviceId,
+          label: d.label || ("麦克风 " + d.deviceId.slice(0, 6))
+        }))
+      )
+    `);
+    return devices;
+  } catch {
+    return [];
+  }
 });
 
-ipcMain.handle("check-permissions", () => {
+// Permissions
+ipcMain.handle("check-permissions", async () => {
   const mic = systemPreferences.getMediaAccessStatus("microphone");
-  // Accessibility check via AppleScript
   let accessibility = false;
   try {
-    execSync(
+    await execAsync(
       `osascript -e 'tell application "System Events" to return name of first process'`,
       { timeout: 3000 }
     );
@@ -490,6 +680,12 @@ ipcMain.on("open-accessibility-settings", () => {
   );
 });
 
+ipcMain.on("open-input-monitoring-settings", () => {
+  shell.openExternal(
+    "x-apple.systempreferences:com.apple.preference.security?Privacy_ListenEvent"
+  );
+});
+
 ipcMain.on("open-url", (_event, url) => {
   shell.openExternal(url);
 });
@@ -500,4 +696,111 @@ ipcMain.handle("get-history", () => {
 
 ipcMain.on("clear-history", () => {
   store.set("history", []);
+});
+
+// --- Auth & Backend IPC (all use native fetch — no shell injection) ---
+
+// Login: send OTP to email
+ipcMain.handle("auth-login", async (_event, email) => {
+  try {
+    return await apiFetch("/auth/login", {
+      method: "POST",
+      body: JSON.stringify({ email }),
+      timeout: 15000,
+    });
+  } catch (e) {
+    return { error: e.message };
+  }
+});
+
+// Verify OTP
+ipcMain.handle("auth-verify", async (_event, { email, token }) => {
+  try {
+    const data = await apiFetch("/auth/verify", {
+      method: "POST",
+      body: JSON.stringify({ email, token }),
+      timeout: 15000,
+    });
+    if (data.session) {
+      store.set("authToken", data.session.access_token);
+      store.set("authRefreshToken", data.session.refresh_token);
+      store.set("authEmail", data.user.email);
+    }
+    return data;
+  } catch (e) {
+    return { error: e.message };
+  }
+});
+
+// Get auth state
+ipcMain.handle("get-auth-state", () => {
+  return {
+    isLoggedIn: !!store.get("authToken"),
+    email: store.get("authEmail"),
+    plan: store.get("userPlan"),
+  };
+});
+
+// Logout
+ipcMain.handle("auth-logout", () => {
+  store.set("authToken", "");
+  store.set("authRefreshToken", "");
+  store.set("authEmail", "");
+  store.set("userPlan", "free");
+  return true;
+});
+
+// Fetch & sync profile from backend
+ipcMain.handle("sync-profile", async () => {
+  const profile = await fetchProfile();
+  if (profile) {
+    store.set("userPlan", profile.plan);
+    if (profile.usage) {
+      const localUsage = getUsage();
+      if (profile.usage.count > localUsage.count) {
+        store.set("weeklyUsage", {
+          count: profile.usage.count,
+          resetAt: store.get("weeklyUsage").resetAt,
+        });
+      }
+    }
+    return profile;
+  }
+  return null;
+});
+
+// Generate invite code
+ipcMain.handle("create-invite-code", async () => {
+  if (!store.get("authToken")) return { error: "未登录" };
+  try {
+    return await apiFetch("/invite/create", { method: "POST" });
+  } catch (e) {
+    return { error: e.message };
+  }
+});
+
+// Redeem invite code
+ipcMain.handle("redeem-invite-code", async (_event, code) => {
+  if (!store.get("authToken")) return { error: "未登录" };
+  try {
+    return await apiFetch("/invite/redeem", {
+      method: "POST",
+      body: JSON.stringify({ code }),
+    });
+  } catch (e) {
+    return { error: e.message };
+  }
+});
+
+// Redeem pro code
+ipcMain.handle("redeem-pro-code", async (_event, code) => {
+  if (!store.get("authToken")) return { error: "未登录" };
+  try {
+    return await apiFetch("/redeem", {
+      method: "POST",
+      body: JSON.stringify({ code }),
+    });
+  } catch (e) {
+    return { error: e.message };
+  }
 });

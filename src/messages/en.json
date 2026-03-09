@@ -4,17 +4,18 @@
     "howItWorks": "How it works",
     "pricing": "Pricing",
     "faq": "FAQ",
-    "download": "Download free",
+    "download": "Download for macOS",
     "webDemo": "Web demo"
   },
   "hero": {
-    "badge": "AI-powered voice input tool",
-    "title1": "You talk,",
-    "title2": "I type.",
-    "subtitle": "Type 3x faster by speaking. Parla runs in the background — press a hotkey to voice-type in any app. Filler words removed, grammar fixed, output formatted automatically.",
-    "cta": "Download free for macOS",
-    "secondaryCta": "Try web demo",
-    "comingSoon": "Windows coming soon"
+    "badge": "AI-powered voice input",
+    "title1": "Speak.",
+    "title2": "It's written.",
+    "subtitle": "Type 3x faster by speaking. Press a hotkey to voice-type in any app — filler words removed, grammar fixed, output formatted automatically.",
+    "cta": "Download for macOS",
+    "secondaryCta": "Try in browser",
+    "comingSoon": "Coming soon for macOS",
+    "systemReq": "macOS 12+ · Apple Silicon & Intel"
   },
   "demo": {
     "youSaid": "You said",
@@ -24,16 +25,16 @@
     "output": "Parla output"
   },
   "speed": {
-    "title1": "Type at the ",
-    "title2": "speed of thought",
-    "title3": "",
+    "title1": "Type at the speed of ",
+    "title2": "thought",
+    "title3": ".",
     "subtitle": "Average typing speed is 40 WPM. Natural speech is 150 WPM. Parla gives you 3x the speed while producing cleaner text than you'd type.",
     "typing": "Typing",
-    "regularStt": "Regular speech-to-text",
-    "murmur": "Parla (speak + AI polish)",
-    "subSecond": "Sub-second processing",
+    "regularStt": "Regular STT",
+    "murmur": "Parla voice input",
     "aiPolished": "AI-polished output",
-    "sameSpeed": "Same speed as speech-to-text, but output is polished and formatted"
+    "subSecond": "Sub-second latency",
+    "sameSpeed": "Same speed as voice, auto-polished"
   },
   "features": {
     "title1": "Not just dictation.",
@@ -72,11 +73,14 @@
     "free": "Free",
     "freeDesc": "For daily personal use",
     "perMonth": "/month",
-    "freeFeature1": "30 minutes of voice input per day",
+    "freeFeature1": "10,000 characters per week",
     "freeFeature2": "100+ languages",
     "freeFeature3": "Smart polish",
     "freeFeature4": "Custom hotkey",
-    "getStarted": "Download free",
+    "freePrice": "$0",
+    "proPrice": "$8",
+    "proAnnual": "or $69/year (save $27)",
+    "getStarted": "Download",
     "popular": "Recommended",
     "pro": "Pro",
     "proDesc": "For power users",
@@ -93,7 +97,7 @@
     "q1": "How accurate is the recognition?",
     "a1": "Parla uses Whisper large-v3, one of the most accurate speech recognition engines. It handles accents, background noise, and multilingual mixing. The AI polish layer further cleans up any remaining filler words and grammar issues.",
     "q2": "Which operating systems are supported?",
-    "a2": "Currently macOS is supported. Windows is in development. You can also try the core features via the web demo.",
+    "a2": "Currently macOS 12+ is supported, compatible with both Apple Silicon and Intel. Windows is in development.",
     "q3": "Which languages are supported?",
     "a3": "100+ languages via the Whisper model, including Chinese, English, Japanese, Korean, and more. You can mix multiple languages in the same sentence with no manual switching.",
     "q4": "Is my voice data safe?",
@@ -106,11 +110,11 @@
   "cta": {
     "title1": "Stop typing one letter at a time.",
     "title2": "Just speak.",
-    "subtitle": "3x faster writing. Download free and try it now.",
-    "button": "Download Parla free"
+    "subtitle": "3x faster writing. Download and try it now.",
+    "button": "Download for macOS"
   },
   "footer": {
-    "tagline": "You talk, I type."
+    "tagline": "Speak. It's written."
   },
   "app": {
     "general": "General",

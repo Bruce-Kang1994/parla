@@ -1,0 +1,146 @@
+{
+  "nav": {
+    "features": "Recursos",
+    "howItWorks": "Como funciona",
+    "pricing": "Precos",
+    "faq": "Perguntas frequentes",
+    "download": "Baixar para macOS",
+    "webDemo": "Experimentar no navegador"
+  },
+  "hero": {
+    "badge": "Entrada de voz com IA",
+    "title1": "Fale.",
+    "title2": "Está escrito.",
+    "subtitle": "Digite 3x mais rapido falando. Pressione um atalho para digitar por voz em qualquer app — palavras de preenchimento removidas, gramatica corrigida, texto formatado automaticamente.",
+    "cta": "Baixar para macOS",
+    "secondaryCta": "Experimentar no navegador",
+    "comingSoon": "Em breve para macOS",
+    "systemReq": "macOS 12+ · Apple Silicon e Intel"
+  },
+  "demo": {
+    "youSaid": "Voce disse",
+    "processing": "Processando...",
+    "done": "Pronto",
+    "waiting": "Aguardando...",
+    "output": "Resultado do Parla"
+  },
+  "speed": {
+    "title1": "Digite na velocidade do ",
+    "title2": "pensamento",
+    "title3": ".",
+    "subtitle": "A velocidade media de digitacao e 40 PPM. A fala natural e 150 PPM. O Parla oferece 3x mais velocidade e produz textos mais limpos do que voce digitaria.",
+    "typing": "Digitacao",
+    "regularStt": "Reconhecimento de voz padrão",
+    "murmur": "Entrada de voz Parla",
+    "aiPolished": "Texto polido por IA",
+    "subSecond": "Latência inferior a 1 segundo",
+    "sameSpeed": "Mesma velocidade, resultado polido automaticamente"
+  },
+  "features": {
+    "title1": "Nao e so ditado.",
+    "title2": "E inteligencia.",
+    "subtitle": "O Parla entende sua intencao e produz exatamente o que voce quis dizer.",
+    "smartCleanup": "Limpeza inteligente",
+    "smartCleanupDesc": "Remove automaticamente palavras de preenchimento como \"hm\" e \"ah\", une repeticoes e detecta autocorrecoes. Fale naturalmente, receba um texto polido.",
+    "contextAware": "Sensivel ao contexto",
+    "contextAwareDesc": "Formal para e-mails, casual para chat, tecnico para comentarios de codigo. O Parla adapta o tom conforme o app ativo.",
+    "languages": "Mais de 100 idiomas",
+    "languagesDesc": "Alterne entre idiomas livremente, ate misture varios em uma mesma frase. O Whisper detecta o idioma automaticamente, sem configuracao manual.",
+    "fast": "Resposta em menos de 1 segundo",
+    "fastDesc": "Menos de 1 segundo entre soltar o atalho e o texto aparecer. Inferencia acelerada pelo Groq, 200x mais rapida que em tempo real.",
+    "privacy": "Privacidade em primeiro lugar",
+    "privacyDesc": "O audio e descartado imediatamente apos o processamento. Nunca armazenado, nunca usado para treinamento. Suporte a modelo local offline em breve.",
+    "globalHotkey": "Atalho global",
+    "globalHotkeyDesc": "Atalho personalizado (padrao Fn) funciona em qualquer app. Pressione e segure para falar, solte para inserir o texto automaticamente na posicao do cursor."
+  },
+  "howItWorks": {
+    "title": "Como funciona",
+    "subtitle": "Tres passos para comecar. Um segundo para concluir.",
+    "step1": "Pressione o atalho",
+    "step1Desc": "Segure o atalho configurado (ex.: Fn) em qualquer app e comece a falar. Fale naturalmente, sem se preocupar com palavras de preenchimento.",
+    "step2": "A IA refina",
+    "step2Desc": "O Whisper transcreve sua fala, depois um LLM remove palavras de preenchimento, corrige a gramatica e formata o texto. Tudo em menos de 1 segundo.",
+    "step3": "Insercao automatica",
+    "step3Desc": "Solte o atalho e o texto refinado e inserido automaticamente na posicao do cursor. Sem copiar e colar, escreve diretamente no app ativo."
+  },
+  "worksEverywhere": {
+    "title": "Funciona em qualquer app",
+    "subtitle": "O Parla roda silenciosamente em segundo plano. Pressione o atalho para digitar por voz no app que estiver usando."
+  },
+  "pricing": {
+    "title": "Precos simples",
+    "subtitle": "Comece gratis. Faca upgrade quando precisar de mais.",
+    "free": "Gratuito",
+    "freeDesc": "Para uso pessoal diario",
+    "perMonth": "/mes",
+    "freeFeature1": "10.000 caracteres por semana",
+    "freeFeature2": "Mais de 100 idiomas",
+    "freeFeature3": "Polimento inteligente",
+    "freeFeature4": "Atalho personalizado",
+    "freePrice": "Gratis",
+    "proPrice": "US$ 8",
+    "proAnnual": "ou US$ 69/ano (economize US$ 27)",
+    "getStarted": "Baixar",
+    "popular": "Recomendado",
+    "pro": "Pro",
+    "proDesc": "Para usuarios avancados",
+    "proFeature1": "Uso ilimitado",
+    "proFeature2": "Mais de 100 idiomas",
+    "proFeature3": "Processamento prioritario",
+    "proFeature4": "Prompts de IA personalizados",
+    "proFeature5": "Historico e busca",
+    "proFeature6": "Acesso a API",
+    "startTrial": "Iniciar teste gratuito de 7 dias"
+  },
+  "faq": {
+    "title": "Perguntas frequentes",
+    "q1": "Qual a precisao do reconhecimento?",
+    "a1": "O Parla usa o Whisper large-v3, um dos motores de reconhecimento de fala mais precisos. Ele lida bem com sotaques, ruido de fundo e mistura de idiomas. A camada de polimento por IA corrige palavras de preenchimento e problemas gramaticais restantes.",
+    "q2": "Quais sistemas operacionais sao suportados?",
+    "a2": "Atualmente, macOS 12+ e suportado, compativel com Apple Silicon e Intel. A versao para Windows esta em desenvolvimento.",
+    "q3": "Quais idiomas sao suportados?",
+    "a3": "Mais de 100 idiomas pelo modelo Whisper, incluindo portugues, ingles, espanhol, japones e muitos outros. Voce pode misturar varios idiomas na mesma frase sem precisar alternar manualmente.",
+    "q4": "Meus dados de voz estao seguros?",
+    "a4": "Sim. O audio e descartado imediatamente apos o processamento na nuvem. Nunca armazenado, nunca usado para treinamento. O modo totalmente offline esta planejado para o futuro.",
+    "q5": "Qual a diferenca em relacao ao ditado nativo?",
+    "a5": "O ditado nativo transcreve palavra por palavra, incluindo todos os \"hm\", falsos comecos e erros. O Parla adiciona uma camada de IA: entende sua intencao, remove preenchimentos, formata automaticamente e produz um texto pronto para uso.",
+    "q6": "Posso personalizar o atalho?",
+    "a6": "Sim. O fluxo de configuracao inicial guia voce na escolha do atalho. O padrao e Fn, mas voce pode alterar para qualquer combinacao de teclas que preferir."
+  },
+  "cta": {
+    "title1": "Pare de digitar uma letra por vez.",
+    "title2": "Apenas fale.",
+    "subtitle": "Escrita 3x mais rapida. Baixe e experimente agora.",
+    "button": "Baixar para macOS"
+  },
+  "footer": {
+    "tagline": "Fale. Esta escrito."
+  },
+  "app": {
+    "general": "Geral",
+    "email": "E-mail",
+    "chat": "Chat",
+    "document": "Documento",
+    "code": "Codigo",
+    "live": "Ao vivo",
+    "holdSpace": "Segure {key} para falar, solte para finalizar",
+    "orClickMic": "Ou clique no botao do microfone. O texto e copiado automaticamente para a area de transferencia.",
+    "copiedToClipboard": "Copiado para a area de transferencia",
+    "history": "Historico",
+    "clear": "Limpar",
+    "noHistory": "Nenhuma gravacao ainda. Comece a falar para ver seu historico.",
+    "micDenied": "Acesso ao microfone negado. Permita o acesso ao microfone nas configuracoes do navegador.",
+    "somethingWrong": "Algo deu errado. Tente novamente."
+  },
+  "transcript": {
+    "polished": "Refinado",
+    "rawTranscript": "Transcricao original",
+    "hideRaw": "Ocultar original",
+    "showRaw": "Mostrar original"
+  },
+  "voice": {
+    "recording": "Gravando... clique para parar",
+    "processing": "Processando...",
+    "clickToStart": "Clique para comecar"
+  }
+}

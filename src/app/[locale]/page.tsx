@@ -39,7 +39,7 @@ const DEMO_EXAMPLES = [
   },
   {
     label: "\u65e5\u672c\u8a9e",
-    raw: "\u3048\u3063\u3068 \u305d\u306e\u4ef6\u306a\u3093\u3067\u3059\u3051\u3069 \u3042\u306e\u30c7\u30b6\u30a4\u30f3\u3092 \u3084\u3063\u3071\u308a\u5148\u65b9\u306b\u50ae\u305f\u611f\u3058\u306b \u3042 \u3082\u3046\u5c11\u3057\u4e38\u307f\u3092\u5e2f\u3073\u305f\u30c7\u30b6\u30a4\u30f3\u306b\u5909\u66f4\u3057\u3066\u304f\u3060\u3055\u3044",
+    raw: "\u3048\u3063\u3068 \u305d\u306e\u4ef6\u306a\u3093\u3067\u3059\u3051\u3069 \u3042\u306e\u30c7\u30b6\u30a4\u30f3\u3092 \u3084\u3063\u3071\u308a\u5148\u65b9\u306b\u50be\u305f\u611f\u3058\u306b \u3042 \u3082\u3046\u5c11\u3057\u4e38\u307f\u3092\u5e2f\u3073\u305f\u30c7\u30b6\u30a4\u30f3\u306b\u5909\u66f4\u3057\u3066\u304f\u3060\u3055\u3044",
     polished: "\u305d\u306e\u30c7\u30b6\u30a4\u30f3\u3092\u3001\u3082\u3046\u5c11\u3057\u4e38\u307f\u3092\u5e2f\u3073\u305f\u30c7\u30b6\u30a4\u30f3\u306b\u5909\u66f4\u3057\u3066\u304f\u3060\u3055\u3044\u3002",
   },
 ];
@@ -252,65 +252,69 @@ export default function LandingPage() {
 
   return (
     <div className="min-h-screen bg-background text-foreground overflow-x-hidden">
-      {/* Nav */}
-      <nav className="fixed top-0 left-0 right-0 z-50 glass">
-        <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
+      {/* Floating Pill Nav */}
+      <nav className="fixed top-4 left-1/2 -translate-x-1/2 z-50 w-[calc(100%-2rem)] max-w-3xl">
+        <div className="flex items-center justify-between px-4 sm:px-5 py-2.5 bg-white/90 backdrop-blur-xl rounded-full shadow-lg shadow-black/[0.06] border border-border/60">
           <div className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-lg bg-accent flex items-center justify-center">
-              <Mic className="w-4 h-4 text-white" />
+            <div className="w-7 h-7 rounded-lg bg-accent flex items-center justify-center">
+              <Mic className="w-3.5 h-3.5 text-white" />
             </div>
-            <span className="text-lg font-bold">Parla</span>
+            <span className="text-base font-bold">Parla</span>
           </div>
-          <div className="hidden md:flex items-center gap-6">
-            <a href="#features" className="text-sm text-muted-foreground hover:text-foreground transition-colors">{t("nav.features")}</a>
-            <a href="#how" className="text-sm text-muted-foreground hover:text-foreground transition-colors">{t("nav.howItWorks")}</a>
-            <a href="#pricing" className="text-sm text-muted-foreground hover:text-foreground transition-colors">{t("nav.pricing")}</a>
-            <a href="#faq" className="text-sm text-muted-foreground hover:text-foreground transition-colors">{t("nav.faq")}</a>
+          <div className="hidden md:flex items-center gap-1">
+            <a href="#features" className="text-sm text-muted-foreground hover:text-foreground transition-colors px-3 py-1">{t("nav.features")}</a>
+            <a href="#pricing" className="text-sm text-muted-foreground hover:text-foreground transition-colors px-3 py-1">{t("nav.pricing")}</a>
+            <a href="#faq" className="text-sm text-muted-foreground hover:text-foreground transition-colors px-3 py-1">{t("nav.faq")}</a>
+          </div>
+          <div className="flex items-center gap-2">
             <LanguageSwitcher />
-            <Link href="/app" className="px-4 py-2 rounded-lg border border-border text-sm font-medium text-muted-foreground hover:text-foreground hover:border-muted-foreground transition-all">
+            <Link href="/app" className="hidden sm:inline-flex text-sm text-muted-foreground hover:text-foreground transition-colors px-3 py-1">
               {t("nav.webDemo")}
             </Link>
-            <a href="#download" className="px-4 py-2 rounded-lg bg-accent hover:bg-accent-light text-white text-sm font-medium transition-all hover:shadow-[0_0_20px_rgba(37,99,235,0.3)] flex items-center gap-1.5">
-              <Download className="w-3.5 h-3.5" /> {t("nav.download")}
+            <a href="#download" className="px-4 py-1.5 rounded-full bg-foreground hover:bg-foreground/90 text-background text-sm font-medium transition-all flex items-center gap-1.5">
+              <Download className="w-3.5 h-3.5" /> <span className="hidden sm:inline">{t("nav.download")}</span><span className="sm:hidden"><Download className="w-0 h-0" /></span>
             </a>
-          </div>
-          <div className="flex md:hidden items-center gap-2">
-            <LanguageSwitcher />
-            <button onClick={() => setMobileMenuOpen(!mobileMenuOpen)} className="p-2 rounded-lg hover:bg-surface text-muted-foreground">
+            <button
+              className="md:hidden p-1.5 text-muted-foreground hover:text-foreground"
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            >
               {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
             </button>
           </div>
         </div>
         {mobileMenuOpen && (
-          <div className="md:hidden border-t border-border bg-surface/95 backdrop-blur-lg px-6 py-4 flex flex-col gap-3 animate-in fade-in slide-in-from-top-2 duration-200">
-            <a href="#features" onClick={() => setMobileMenuOpen(false)} className="text-sm text-muted-foreground hover:text-foreground py-2">{t("nav.features")}</a>
-            <a href="#how" onClick={() => setMobileMenuOpen(false)} className="text-sm text-muted-foreground hover:text-foreground py-2">{t("nav.howItWorks")}</a>
-            <a href="#pricing" onClick={() => setMobileMenuOpen(false)} className="text-sm text-muted-foreground hover:text-foreground py-2">{t("nav.pricing")}</a>
-            <a href="#faq" onClick={() => setMobileMenuOpen(false)} className="text-sm text-muted-foreground hover:text-foreground py-2">{t("nav.faq")}</a>
-            <Link href="/app" className="px-4 py-2.5 rounded-lg border border-border text-sm font-medium text-center">{t("nav.webDemo")}</Link>
-            <a href="#download" className="px-4 py-2.5 rounded-lg bg-accent text-white text-sm font-medium text-center flex items-center justify-center gap-1.5"><Download className="w-3.5 h-3.5" /> {t("nav.download")}</a>
+          <div className="md:hidden mt-2 bg-white/95 backdrop-blur-xl rounded-2xl shadow-lg border border-border/60 px-5 py-4 flex flex-col gap-3 animate-in fade-in slide-in-from-top-2 duration-200">
+            <a href="#features" onClick={() => setMobileMenuOpen(false)} className="text-sm text-muted-foreground hover:text-foreground py-1.5">{t("nav.features")}</a>
+            <a href="#how" onClick={() => setMobileMenuOpen(false)} className="text-sm text-muted-foreground hover:text-foreground py-1.5">{t("nav.howItWorks")}</a>
+            <a href="#pricing" onClick={() => setMobileMenuOpen(false)} className="text-sm text-muted-foreground hover:text-foreground py-1.5">{t("nav.pricing")}</a>
+            <a href="#faq" onClick={() => setMobileMenuOpen(false)} className="text-sm text-muted-foreground hover:text-foreground py-1.5">{t("nav.faq")}</a>
+            <Link href="/app" onClick={() => setMobileMenuOpen(false)} className="text-sm text-muted-foreground hover:text-foreground py-1.5">{t("nav.webDemo")}</Link>
           </div>
         )}
       </nav>
 
-      {/* Hero */}
-      <section className="relative pt-32 pb-20 px-6">
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[600px] bg-accent/5 rounded-full blur-[120px] pointer-events-none" />
+      {/* Hero — Clean white, giant typography */}
+      <section className="relative pt-32 sm:pt-40 pb-16 sm:pb-20 px-6">
         <div className="max-w-4xl mx-auto text-center relative z-10">
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-border bg-surface text-sm text-muted-foreground mb-8 animate-in fade-in duration-700">
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-muted text-sm text-muted-foreground mb-8 animate-in fade-in duration-700">
             <Sparkles className="w-4 h-4 text-accent-light" /> {t("hero.badge")}
           </div>
-          <h1 className="text-5xl sm:text-7xl font-bold tracking-tight mb-6 leading-[1.1] animate-in fade-in slide-in-from-bottom-4 duration-700 delay-150">
-            {t("hero.title1")} <span className="gradient-text">{t("hero.title2")}</span>
+          <h1 className="animate-in fade-in slide-in-from-bottom-4 duration-700 delay-150">
+            <span className="block text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold tracking-tight text-foreground leading-[1.05]">
+              {t("hero.title1")}
+            </span>
+            <span className="block text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold tracking-tight leading-[1.05] gradient-text">
+              {t("hero.title2")}
+            </span>
           </h1>
-          <p className="text-xl text-muted-foreground max-w-2xl mx-auto mb-10 leading-relaxed animate-in fade-in slide-in-from-bottom-4 duration-700 delay-300">
+          <p className="mt-6 text-lg sm:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed animate-in fade-in slide-in-from-bottom-4 duration-700 delay-300">
             {t("hero.subtitle")}
           </p>
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 animate-in fade-in slide-in-from-bottom-4 duration-700 delay-500">
-            <a href="#download" className="group px-8 py-3.5 rounded-xl btn-warm text-lg flex items-center gap-2">
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mt-10 animate-in fade-in slide-in-from-bottom-4 duration-700 delay-500">
+            <a href="#download" className="group px-8 py-3.5 rounded-full bg-foreground hover:bg-foreground/90 text-background text-lg font-semibold transition-all duration-200 hover:-translate-y-0.5 hover:shadow-xl hover:shadow-black/10 flex items-center gap-2">
               <Download className="w-5 h-5" /> {t("hero.cta")}
             </a>
-            <Link href="/app" className="px-8 py-3.5 rounded-xl border border-border text-muted-foreground hover:text-foreground hover:border-muted-foreground font-medium text-lg transition-all">
+            <Link href="/app" className="px-8 py-3.5 rounded-full border border-border text-muted-foreground hover:text-foreground hover:border-muted-foreground font-medium text-lg transition-all">
               {t("hero.secondaryCta")}
             </Link>
           </div>
@@ -418,7 +422,7 @@ export default function LandingPage() {
                   <li key={f} className="flex items-center gap-2 text-sm text-muted-foreground"><Check className="w-4 h-4 text-success flex-shrink-0" />{f}</li>
                 ))}
               </ul>
-              <a href="#download" className="block w-full text-center py-2.5 rounded-xl border border-border text-foreground font-medium hover:bg-surface-hover transition-colors">{t("pricing.getStarted")}</a>
+              <a href="#download" className="block w-full text-center py-2.5 rounded-full border border-border text-foreground font-medium hover:bg-surface-hover transition-colors">{t("pricing.getStarted")}</a>
             </div>
             <div className="bg-surface border-2 border-accent rounded-2xl p-8 relative">
               <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-0.5 bg-accent rounded-full text-xs font-medium text-white">{t("pricing.popular")}</div>
@@ -430,7 +434,7 @@ export default function LandingPage() {
                   <li key={f} className="flex items-center gap-2 text-sm text-foreground"><Check className="w-4 h-4 text-accent-light flex-shrink-0" />{f}</li>
                 ))}
               </ul>
-              <a href="#download" className="block w-full text-center py-2.5 rounded-xl bg-accent hover:bg-accent-light text-white font-medium transition-all hover:shadow-[0_0_20px_rgba(37,99,235,0.3)]">{t("pricing.startTrial")}</a>
+              <a href="#download" className="block w-full text-center py-2.5 rounded-full bg-accent hover:bg-accent-light text-white font-medium transition-all hover:shadow-[0_0_20px_rgba(37,99,235,0.3)]">{t("pricing.startTrial")}</a>
             </div>
           </div>
         </div>
@@ -449,13 +453,13 @@ export default function LandingPage() {
       </section>
 
       {/* CTA */}
-      <section className="py-24 px-6 bg-surface/50">
+      <section id="download" className="py-24 px-6 bg-surface/50">
         <div className="max-w-3xl mx-auto text-center">
           <h2 className="text-3xl sm:text-4xl font-bold mb-4">
             {t("cta.title1")} <span className="gradient-text">{t("cta.title2")}</span>
           </h2>
           <p className="text-lg text-muted-foreground mb-8">{t("cta.subtitle")}</p>
-          <a href="#download" className="group inline-flex items-center gap-2 px-8 py-3.5 rounded-xl btn-warm text-lg">
+          <a href="#download" className="group inline-flex items-center gap-2 px-8 py-3.5 rounded-full bg-foreground hover:bg-foreground/90 text-background text-lg font-semibold transition-all duration-200 hover:-translate-y-0.5 hover:shadow-xl hover:shadow-black/10">
             <Download className="w-5 h-5" /> {t("cta.button")}
           </a>
         </div>

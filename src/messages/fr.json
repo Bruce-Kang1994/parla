@@ -1,0 +1,146 @@
+{
+  "nav": {
+    "features": "Fonctionnalit\u00e9s",
+    "howItWorks": "Comment \u00e7a marche",
+    "pricing": "Tarifs",
+    "faq": "FAQ",
+    "download": "T\u00e9l\u00e9charger pour macOS",
+    "webDemo": "Essayer en ligne"
+  },
+  "hero": {
+    "badge": "Saisie vocale par IA",
+    "title1": "Parle.",
+    "title2": "C\u2019est \u00e9crit.",
+    "subtitle": "Tapez 3 fois plus vite en parlant. Appuyez sur un raccourci pour dicter dans n\u2019importe quelle app\u00a0: mots parasites supprim\u00e9s, grammaire corrig\u00e9e, mise en forme automatique.",
+    "cta": "T\u00e9l\u00e9charger pour macOS",
+    "secondaryCta": "Essayer en ligne",
+    "comingSoon": "Bient\u00f4t sur macOS",
+    "systemReq": "macOS 12+ \u00b7 Apple Silicon et Intel"
+  },
+  "demo": {
+    "youSaid": "Vous avez dit",
+    "processing": "Traitement\u2026",
+    "done": "Termin\u00e9",
+    "waiting": "En attente\u2026",
+    "output": "R\u00e9sultat Parla"
+  },
+  "speed": {
+    "title1": "Tapez à la vitesse de la ",
+    "title2": "pensée",
+    "title3": ".",
+    "subtitle": "La vitesse de frappe moyenne est de 40 mots/min. La parole naturelle atteint 150 mots/min. Parla vous offre 3 fois plus de rapidité avec un texte plus propre que ce que vous taperiez.",
+    "typing": "Frappe clavier",
+    "regularStt": "Reconnaissance vocale standard",
+    "murmur": "Saisie vocale Parla",
+    "aiPolished": "Texte peaufiné par l\u2019IA",
+    "subSecond": "Latence inférieure à 1 seconde",
+    "sameSpeed": "Même vitesse, résultat poli automatiquement"
+  },
+  "features": {
+    "title1": "Pas juste de la dict\u00e9e.",
+    "title2": "De l\u2019intelligence.",
+    "subtitle": "Parla comprend votre intention et produit exactement ce que vous voulez dire.",
+    "smartCleanup": "Nettoyage intelligent",
+    "smartCleanupDesc": "Supprime automatiquement les mots parasites comme \u00ab\u00a0euh\u00a0\u00bb et \u00ab\u00a0hum\u00a0\u00bb, fusionne les r\u00e9p\u00e9titions et d\u00e9tecte les auto-corrections. Parlez naturellement, obtenez un texte soign\u00e9.",
+    "contextAware": "Adapt\u00e9 au contexte",
+    "contextAwareDesc": "Formel pour les e-mails, d\u00e9contract\u00e9 pour le chat, technique pour les commentaires de code. Parla adapte le ton selon l\u2019application active.",
+    "languages": "Plus de 100 langues",
+    "languagesDesc": "Passez d\u2019une langue \u00e0 l\u2019autre librement, m\u00e9langez-les dans la m\u00eame phrase. Whisper d\u00e9tecte automatiquement la langue sans configuration.",
+    "fast": "R\u00e9ponse en moins d\u2019une seconde",
+    "fastDesc": "Moins d\u2019une seconde entre le rel\u00e2chement du raccourci et l\u2019apparition du texte. L\u2019inf\u00e9rence acc\u00e9l\u00e9r\u00e9e par Groq est 200 fois plus rapide que le temps r\u00e9el.",
+    "privacy": "Confidentialit\u00e9 avant tout",
+    "privacyDesc": "L\u2019audio est supprim\u00e9 imm\u00e9diatement apr\u00e8s le traitement. Jamais stock\u00e9, jamais utilis\u00e9 pour l\u2019entra\u00eenement. Mode hors ligne \u00e0 venir.",
+    "globalHotkey": "Raccourci global",
+    "globalHotkeyDesc": "Un raccourci personnalis\u00e9 (Fn par d\u00e9faut) fonctionne dans toute application. Maintenez pour parler, rel\u00e2chez pour ins\u00e9rer le texte \u00e0 la position du curseur."
+  },
+  "howItWorks": {
+    "title": "Comment \u00e7a marche",
+    "subtitle": "Trois \u00e9tapes pour commencer. Une seconde pour terminer.",
+    "step1": "Appuyez sur le raccourci",
+    "step1Desc": "Maintenez votre raccourci configur\u00e9 (ex. Fn) dans n\u2019importe quelle app et commencez \u00e0 parler. Parlez naturellement, inutile d\u2019\u00e9viter les mots parasites.",
+    "step2": "L\u2019IA peaufine",
+    "step2Desc": "Whisper transcrit votre parole, puis un LLM supprime les mots parasites, corrige la grammaire et met en forme le texte. Le tout en moins d\u2019une seconde.",
+    "step3": "Insertion automatique",
+    "step3Desc": "Rel\u00e2chez le raccourci et le texte peaufin\u00e9 est automatiquement ins\u00e9r\u00e9 \u00e0 la position du curseur. Pas de copier-coller, l\u2019\u00e9criture se fait directement dans l\u2019application active."
+  },
+  "worksEverywhere": {
+    "title": "Fonctionne dans toute application",
+    "subtitle": "Parla tourne discr\u00e8tement en arri\u00e8re-plan. Appuyez sur le raccourci pour dicter dans l\u2019application que vous utilisez."
+  },
+  "pricing": {
+    "title": "Tarification simple",
+    "subtitle": "Commencez gratuitement. Passez \u00e0 la version sup\u00e9rieure quand vous en avez besoin.",
+    "free": "Gratuit",
+    "freeDesc": "Pour un usage personnel quotidien",
+    "perMonth": "/mois",
+    "freeFeature1": "10 000 caractères par semaine",
+    "freeFeature2": "Plus de 100 langues",
+    "freeFeature3": "Peaufinage intelligent",
+    "freeFeature4": "Raccourci personnalis\u00e9",
+    "freePrice": "0 \u20ac",
+    "proPrice": "8 \u20ac",
+    "proAnnual": "ou 69 \u20ac/an (\u00e9conomisez 27 \u20ac)",
+    "getStarted": "T\u00e9l\u00e9charger",
+    "popular": "Recommand\u00e9",
+    "pro": "Pro",
+    "proDesc": "Pour les utilisateurs intensifs",
+    "proFeature1": "Utilisation illimit\u00e9e",
+    "proFeature2": "Plus de 100 langues",
+    "proFeature3": "Traitement prioritaire",
+    "proFeature4": "Prompts IA personnalis\u00e9s",
+    "proFeature5": "Historique et recherche",
+    "proFeature6": "Acc\u00e8s API",
+    "startTrial": "Essai gratuit de 7 jours"
+  },
+  "faq": {
+    "title": "Questions fr\u00e9quentes",
+    "q1": "Quelle est la pr\u00e9cision de la reconnaissance\u00a0?",
+    "a1": "Parla utilise Whisper large-v3, l\u2019un des moteurs de reconnaissance vocale les plus pr\u00e9cis. Il g\u00e8re les accents, le bruit de fond et le m\u00e9lange multilingue. La couche de peaufinage par IA corrige les mots parasites et les erreurs de grammaire restants.",
+    "q2": "Quels syst\u00e8mes d\u2019exploitation sont pris en charge\u00a0?",
+    "a2": "Actuellement, macOS 12+ est pris en charge, compatible avec Apple Silicon et Intel. La version Windows est en cours de d\u00e9veloppement.",
+    "q3": "Quelles langues sont prises en charge\u00a0?",
+    "a3": "Plus de 100 langues gr\u00e2ce au mod\u00e8le Whisper, dont le fran\u00e7ais, l\u2019anglais, le chinois, le japonais, le cor\u00e9en et bien d\u2019autres. Vous pouvez m\u00e9langer plusieurs langues dans la m\u00eame phrase sans changer de mode.",
+    "q4": "Mes donn\u00e9es vocales sont-elles prot\u00e9g\u00e9es\u00a0?",
+    "a4": "Oui. L\u2019audio est supprim\u00e9 imm\u00e9diatement apr\u00e8s le traitement dans le cloud. Jamais stock\u00e9, jamais utilis\u00e9 pour l\u2019entra\u00eenement. Un mode enti\u00e8rement hors ligne est pr\u00e9vu.",
+    "q5": "En quoi est-ce diff\u00e9rent de la dict\u00e9e int\u00e9gr\u00e9e\u00a0?",
+    "a5": "La dict\u00e9e int\u00e9gr\u00e9e transcrit mot pour mot, y compris tous les \u00ab\u00a0euh\u00a0\u00bb, faux d\u00e9parts et erreurs. Parla ajoute une couche d\u2019IA\u00a0: il comprend votre intention, supprime les mots parasites, met en forme et produit un texte pr\u00eat \u00e0 l\u2019emploi.",
+    "q6": "Puis-je personnaliser le raccourci\u00a0?",
+    "a6": "Oui. L\u2019assistant de configuration vous guide dans le choix du raccourci. Par d\u00e9faut c\u2019est Fn, mais vous pouvez le changer pour la combinaison de touches de votre choix."
+  },
+  "cta": {
+    "title1": "Arr\u00eatez de taper lettre par lettre.",
+    "title2": "Parlez, tout simplement.",
+    "subtitle": "3 fois plus rapide. T\u00e9l\u00e9chargez et essayez maintenant.",
+    "button": "T\u00e9l\u00e9charger pour macOS"
+  },
+  "footer": {
+    "tagline": "Parlez. C\u2019est \u00e9crit."
+  },
+  "app": {
+    "general": "G\u00e9n\u00e9ral",
+    "email": "E-mail",
+    "chat": "Chat",
+    "document": "Document",
+    "code": "Code",
+    "live": "En direct",
+    "holdSpace": "Maintenez {key} pour parler, rel\u00e2chez pour terminer",
+    "orClickMic": "Ou cliquez sur le bouton micro. Le texte est automatiquement copi\u00e9 dans le presse-papiers.",
+    "copiedToClipboard": "Copi\u00e9 dans le presse-papiers",
+    "history": "Historique",
+    "clear": "Effacer",
+    "noHistory": "Aucun enregistrement pour le moment. Commencez \u00e0 parler pour voir votre historique.",
+    "micDenied": "Acc\u00e8s au microphone refus\u00e9. Veuillez autoriser l\u2019acc\u00e8s au micro dans les r\u00e9glages de votre navigateur.",
+    "somethingWrong": "Une erreur est survenue. Veuillez r\u00e9essayer."
+  },
+  "transcript": {
+    "polished": "Peaufin\u00e9",
+    "rawTranscript": "Transcription brute",
+    "hideRaw": "Masquer la version brute",
+    "showRaw": "Afficher la version brute"
+  },
+  "voice": {
+    "recording": "Enregistrement\u2026 cliquez pour arr\u00eater",
+    "processing": "Traitement\u2026",
+    "clickToStart": "Cliquez pour commencer"
+  }
+}
