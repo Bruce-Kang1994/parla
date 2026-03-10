@@ -1,61 +1,50 @@
-# Murmur — Say it. Done.
+# Parla — 开口即文字。
 
-AI voice dictation that removes filler words, fixes grammar, and formats your speech into clean, professional text — instantly.
+> **状态: 已存档** — 详见 [ARCHIVE.md](ARCHIVE.md)
 
-## Quick Start
+macOS AI 语音输入工具。按下快捷键说话，AI 自动去口语化、格式化，文字直接出现在光标位置。
+
+## 为什么存档
+
+语音输入工具品类的结构性问题：技术无护城河（Whisper 开源，Apple 听写越来越强）、功能天花板低、零切换成本、赛道拥挤。详细分析见 [ARCHIVE.md](ARCHIVE.md#六为什么存档)。
+
+## 核心技术
+
+- **桌面端**: Electron 35 + React 18 + Vite 6
+- **AI 管线**: Groq Whisper (ASR) → Groq LLaMA-3.3-70b (润色)
+- **后端**: Next.js 16 + Supabase (Auth/DB)
+- **系统集成**: 全局快捷键、AppleScript 光标插入、托盘图标、悬浮窗
+
+## 项目亮点
+
+- 6 天从 0 到可打包 .dmg 的完整产品
+- 6 款竞品深度分析 → 差异化定位
+- 双引擎 AI 管线（ASR + LLM）
+- Electron 多窗口架构（主窗口 + 毛玻璃悬浮窗）
+- 完整增长系统（邀请码 / 兑换码 / 分级推广）
+- 4 语言 i18n 支持
+
+## 文档
+
+- [ARCHIVE.md](ARCHIVE.md) — **完整存档**（产品故事、技术细节、决策过程、复用指南）
+- [docs/product-design.md](docs/product-design.md) — 产品设计方案（567 行，含竞品分析）
+- [docs/PRD.md](docs/PRD.md) — 产品需求文档
+- [docs/product-review-2026-03-06.md](docs/product-review-2026-03-06.md) — 产品评审报告
+
+## 本地运行
 
 ```bash
-npm install
-npm run dev
+# Web 落地页
+npm install && npm run dev
+
+# Electron 桌面端
+cd desktop && npm install
+npm run renderer:build
+npm run start
 ```
 
-Open http://localhost:3000. The app runs in **mock mode** by default — no API keys needed.
+需要配置 `.env.local`（Groq API Key + Supabase）。
 
-## How It Works
+---
 
-1. Go to `/app`
-2. Hold **Space** to speak (or click the mic button)
-3. Release — polished text appears and is auto-copied to clipboard
-
-## Switch to Real APIs
-
-1. Copy `.env.example` to `.env.local`
-2. Get API keys:
-   - **Groq** (ASR): https://console.groq.com/keys
-   - **OpenAI** (LLM): https://platform.openai.com/api-keys
-3. Set `NEXT_PUBLIC_USE_MOCK=false` and fill in your keys
-4. Restart the dev server
-
-## Tech Stack
-
-- **Framework:** Next.js 16 (App Router)
-- **ASR:** Groq Whisper large-v3-turbo ($0.04/hour)
-- **LLM:** OpenAI GPT-4o mini (post-processing)
-- **Styling:** Tailwind CSS v4
-- **Language:** TypeScript
-
-## Project Structure
-
-```
-src/
-├── app/
-│   ├── page.tsx              # Landing page
-│   ├── app/page.tsx          # Dictation workspace
-│   └── api/
-│       ├── transcribe/       # ASR endpoint (Groq Whisper / mock)
-│       └── polish/           # LLM endpoint (GPT-4o mini / mock)
-├── components/
-│   ├── VoiceButton.tsx       # Push-to-talk with pulse animation
-│   ├── WaveformVisualizer.tsx # Real-time audio bars
-│   └── TranscriptPanel.tsx   # Raw/polished output
-└── lib/
-    ├── types.ts
-    ├── prompts.ts            # LLM system prompts
-    └── mock.ts               # Demo data
-```
-
-## Docs
-
-- [PRD](docs/PRD.md) — Full product spec
-- [Product Review](docs/product-review-2026-03-06.md) — Competitive audit
-- [Pre-Delivery Gate](docs/pre-delivery-gate-2026-03-06.md) — Quality assessment
+*Built in 6 days. Archived with intent.*
